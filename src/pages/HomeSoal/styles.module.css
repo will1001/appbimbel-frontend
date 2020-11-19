@@ -1,0 +1,10 @@
+.container {
+  padding: 50px;
+}
+
+.container .button__group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+/*# sourceMappingURL=styles.module.css.map */

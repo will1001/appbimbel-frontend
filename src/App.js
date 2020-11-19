@@ -15,7 +15,7 @@ function App() {
     <div>
       <Router>
          <Switch>
-          <Route path="/buat_soal">
+          <Route path="/form_soal">
             <FormSoal />
           </Route>
           <Route path="/">
