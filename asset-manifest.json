@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/appbimbel-frontend/static/css/main.a3149fb2.chunk.css",
+    "main.js": "/appbimbel-frontend/static/js/main.78620d6c.chunk.js",
+    "main.js.map": "/appbimbel-frontend/static/js/main.78620d6c.chunk.js.map",
+    "runtime-main.js": "/appbimbel-frontend/static/js/runtime-main.09d287b8.js",
+    "runtime-main.js.map": "/appbimbel-frontend/static/js/runtime-main.09d287b8.js.map",
+    "static/js/2.91071a88.chunk.js": "/appbimbel-frontend/static/js/2.91071a88.chunk.js",
+    "static/js/2.91071a88.chunk.js.map": "/appbimbel-frontend/static/js/2.91071a88.chunk.js.map",
+    "static/js/3.d065bb8c.chunk.js": "/appbimbel-frontend/static/js/3.d065bb8c.chunk.js",
+    "static/js/3.d065bb8c.chunk.js.map": "/appbimbel-frontend/static/js/3.d065bb8c.chunk.js.map",
+    "index.html": "/appbimbel-frontend/index.html",
+    "static/css/main.a3149fb2.chunk.css.map": "/appbimbel-frontend/static/css/main.a3149fb2.chunk.css.map",
+    "static/js/2.91071a88.chunk.js.LICENSE.txt": "/appbimbel-frontend/static/js/2.91071a88.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.09d287b8.js",
+    "static/js/2.91071a88.chunk.js",
+    "static/css/main.a3149fb2.chunk.css",
+    "static/js/main.78620d6c.chunk.js"
+  ]
+}
