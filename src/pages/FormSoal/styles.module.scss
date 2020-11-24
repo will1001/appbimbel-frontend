@@ -1,0 +1,10 @@
+.container{
+    padding: 10px;
+    .pilihan__ganda{
+        display: flex;
+        flex-direction: column;
+    }
+    select{
+        margin-right: 10px;
+    }
+}
