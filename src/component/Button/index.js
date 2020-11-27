@@ -4,7 +4,7 @@ import styles from './styles.module.css'
 
 function Button(props) {
     return (
-        <div className={styles.container}>
+        <div className={styles.container} onClick={props.onClick}>
             <Link to={props.link}>
                 {props.title}
             </Link>
