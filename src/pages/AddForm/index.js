@@ -11,7 +11,7 @@ import ReactHtmlParser from 'react-html-parser';
 // import MathType from '@wiris/mathtype-ckeditor5';
 
 
-function FormSoal(props) {
+function AddForm(props) {
     const Latex = require('react-latex');
     const [mapel, setMapel] = useState([]);
     const [kelas, setKelas] = useState([]);
@@ -30,6 +30,10 @@ function FormSoal(props) {
     const [pil_c, setPil_c] = useState("");
     const [pil_d, setPil_d] = useState("");
     const [pil_e, setPil_e] = useState("");
+    const [popUpMenu, setPopUpMenu] = useState(false);
+    const [popUpTitle, setPopUpTitle] = useState("");
+    const [inputDeskripsi, setInputDeskripsi] = useState("");
+    const [addDeskripsiClicked, setAddDeskripsiClicked] = useState(false);
 
 
     const selectMapelChanged = (e) => {
@@ -76,6 +80,16 @@ function FormSoal(props) {
     const pil_eChanged = (e) => {
         setPil_e(e.target.value)
     }
+  
+    const tambahDeskripsi = (title) => {
+        setPopUpMenu(true);
+        if (selectMapel === "" && title === "Bab Soal") {
+            alert("Pilih Mapel Terlebih dahulu");
+            setPopUpMenu(false);
+        }
+        setPopUpTitle(title);
+    }
+
     
     const addData = (e) => {
         let data;
@@ -112,6 +126,49 @@ function FormSoal(props) {
                     console.log(response.data);
                 });
     }
+    
+    const addDeskripsi = () => {
+        setAddDeskripsiClicked(true);
+        // const data = {
+        //         deskripsi: deskripsi,
+        // }
+
+        let tableName;
+        let data;
+        data = {
+            deskripsi : inputDeskripsi
+        }
+        switch (popUpTitle) {
+            case "Mapel":
+                tableName = "mapel";
+                break;
+            case "Kelas":
+                tableName = "kelas";
+                break;
+            case "Bab Soal":
+                tableName = "bab_soal";
+                data = {
+                    deskripsi: inputDeskripsi,
+                    id_mapel: selectMapel
+                }
+                break;
+            case "Tingkat Kesulitan":
+                tableName = "tingkat_kesulitan";
+                break;
+        
+            default:
+                break;
+        }
+
+        // console.log(tableName);
+        
+        axios.post('/' + tableName,data)
+                .then(function (response) {
+                    console.log(response.data);
+                });
+        
+        setPopUpMenu(false);
+    }
 
     useEffect(() => {
         async function fetchdata() {
@@ -138,10 +195,28 @@ function FormSoal(props) {
                     setBabSoal(response.data);
             });
         }
-    }, [selectMapel]);
+        if (addDeskripsiClicked) {
+            fetchdata();
+            setAddDeskripsiClicked(false);
+        }
+    }, [selectMapel,addDeskripsiClicked]);
 
     return (
         <div className={styles.container}>
+            {popUpMenu ? 
+            <div className={styles.popup__menu__container}>
+                <div className={styles.popup__menu}>
+                    <h5>{popUpTitle}</h5>
+                    <input type="text" placeholder={popUpTitle} onChange={(e)=>{setInputDeskripsi(e.target.value)}} />
+                    <div className={styles.button__group}>
+                    <button onClick={()=>{setPopUpMenu(false)}}>Close</button>
+                    <button onClick={addDeskripsi}>Submit</button>
+                    </div>    
+                </div>
+            </div>
+            :
+            ""
+            }
             {/* <div className="App">
                 <h2>Using CKEditor 5 build in React</h2>
                 <CKEditor
@@ -195,10 +270,13 @@ function FormSoal(props) {
             <span>mata pelajaran </span>
             <select value={selectMapel} onChange={selectMapelChanged}>   
             <option value="" disabled ></option>
+            <input type="text" name="" id=""/>
                 {mapel.map(item => (
                    <option key={item.id} value={item.id}>{item.deskripsi}</option>
                 ))}
+                {/* <option value="" onClick={tambahDeskripsi}>+</option> */}
             </select>
+            <button onClick={(title) => tambahDeskripsi("Mapel")}>+</button>
             <span>kelas </span>
             <select value={selectKelas} onChange={selectKelasChanged}>
                 <option value="" disabled ></option>
@@ -206,6 +284,7 @@ function FormSoal(props) {
                    <option key={item.id} value={item.id}>{item.deskripsi}</option>
                 ))}
             </select>
+            <button onClick={(title) => tambahDeskripsi("Kelas")}>+</button>
             <span>Bab </span>
             <select value={selectbabSoal} onChange={selectBabSoalChanged}>
                 <option value="" disabled ></option>
@@ -213,6 +292,7 @@ function FormSoal(props) {
                    <option key={item.id} value={item.id}>{item.deskripsi}</option>
                 ))}
             </select>
+            <button onClick={(title) => tambahDeskripsi("Bab Soal")}>+</button>
             <span>tingkat kesulitan </span>
             <select value={selectTingkatKesulitan} onChange={selectTingkatKesulitanChanged}>
                 <option value="" disabled ></option>
@@ -220,6 +300,7 @@ function FormSoal(props) {
                    <option key={item.id} value={item.id}>{item.deskripsi}</option>
                 ))}
             </select>
+            <button onClick={(title) => tambahDeskripsi("Tingkat Kesulitan")}>+</button>
             <span>tipe soal : </span>
             <select value={tipeSoal} onChange={tipeSoalChanged}>
                 <option value="essai">essai</option>
@@ -283,9 +364,9 @@ function FormSoal(props) {
             </div>
             <br />
             
-            <Button title="Submit" link="/" onClick={addData} />
+            <Button title="Submit" onClick={addData} />
         </div>
     )
 }
 
-export default FormSoal
+export default AddForm

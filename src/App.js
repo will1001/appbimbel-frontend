@@ -1,12 +1,13 @@
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
+  Route
 } from "react-router-dom";
 
 //components
 import HomeSoal from './pages/HomeSoal'
-import FormSoal from './pages/FormSoal'
+import AddForm from './pages/AddForm'
+import EditForm from './pages/EditForm'
 
 import './App.css';
 
@@ -15,9 +16,8 @@ function App() {
     <div>
       <Router>
          <Switch>
-          <Route path="/form_soal">
-            <FormSoal />
-          </Route>
+          <Route path="/add_soal" children={<AddForm />} />
+          <Route path="/edit_soal/:id" children={<EditForm />} />
           <Route path="/">
             <HomeSoal />
           </Route>

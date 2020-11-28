@@ -14,44 +14,48 @@ function HomeSoal(props) {
     const [selectbabSoal, setSelectBabSoal] = useState("");
     const [selectTingkatKesulitan, setSelectTingkatKesulitan] = useState("");
     const [nomor, setNomor] = useState(1);
+    const [id, setId] = useState("");
+    const [deleteData, setDeleteData] = useState(false);
+    const [updateData, setUpdateData] = useState(false);
 
 
     const selectMapelChanged = (e) => {
         setSelectMapel(e.target.value);
+        setUpdateData(true);
         
     }
 
-    const fecthBankSoal = () => {
-        if (
-            selectMapel === "" &&
-            selectKelas === "" &&
-            selectbabSoal === "" &&
-            selectTingkatKesulitan === ""
-        ) {
-            return "";
-        } else {
-            axios.get('/bank_soal?id_mapel='
-                + selectMapel +
-                '&id_kelas=' + selectKelas
-                + '&id_bab_soal=' + selectbabSoal
-                +'&id_tingkat_kesulitan=' + selectTingkatKesulitan)
-                .then(function (response) {
-                    setBankSoal(response.data);
-                });
-        }
-    }
+   
     
     const nomorChanged = (e) => {
         setNomor(e.target.value)
     }
     const selectKelasChanged = (e) => {
         setSelectKelas(e.target.value)
+        setUpdateData(true);
     }
     const selectBabSoalChanged = (e) => {
         setSelectBabSoal(e.target.value)
+        setUpdateData(true);
     }
     const selectTingkatKesulitanChanged = (e) => {
         setSelectTingkatKesulitan(e.target.value)
+        setUpdateData(true);
+    }
+    const fetchUpdateBankSoal = (e) => {
+        axios.get('/bank_soal?id_mapel='
+                + selectMapel +
+                '&id_kelas=' + selectKelas
+                + '&id_bab_soal=' + selectbabSoal
+                +'&id_tingkat_kesulitan=' + selectTingkatKesulitan)
+                .then(function (response) {
+                    setBankSoal(response.data);
+                    if (response.data.length !== 0 ) {
+                        if(nomor !== 0){
+                            setId(response.data[nomor - 1].id);
+                        }
+                    }
+                });
     }
 
 
@@ -80,12 +84,15 @@ function HomeSoal(props) {
                     setBabSoal(response.data);
             });
         }
-        if (
-            selectMapel !== "" &&
-            selectKelas !== "" &&
-            selectbabSoal !== "" &&
-            selectTingkatKesulitan !== ""
-        ) {
+        if (deleteData) {
+            const data = {
+                id : id
+            }
+            axios.post('/bank_soal',data)
+                .then(function (response) {
+                    console.log(response.data);
+                });
+            setNomor(bankSoal.length - 1);
             axios.get('/bank_soal?id_mapel='
                 + selectMapel +
                 '&id_kelas=' + selectKelas
@@ -93,16 +100,43 @@ function HomeSoal(props) {
                 +'&id_tingkat_kesulitan=' + selectTingkatKesulitan)
                 .then(function (response) {
                     setBankSoal(response.data);
+                    if (response.data.length !== 0) {
+                        if (nomor !== 0) {
+                            setId(response.data[response.data.length - 1].id);
+                        }
+                    }
                 });
+                setDeleteData(false)
         }
-    }, [selectMapel,selectKelas,selectbabSoal,selectTingkatKesulitan]);
+        // if (nomor > 0) {
+            
+        // }
+        if (
+            selectMapel !== "" &&
+            selectKelas !== "" &&
+            selectbabSoal !== "" &&
+            selectTingkatKesulitan !== "" &&
+            updateData
+        ) {
+            fetchUpdateBankSoal();
+            setUpdateData(false);
+            
+            }
+    }, [selectMapel,selectKelas,selectbabSoal,selectTingkatKesulitan,nomor,deleteData,id,bankSoal]);
 
     return (
         <div className={styles.container}>
             <div className={styles.button__group}>
-                <Button title="Tambah Soal" link="/form_soal" />
-                <Button title="Edit Soal" link="/form_soal" />
-                <Button link="/" title="Hapus Soal" />
+                <Button title="Tambah Soal" link="/add_soal" />
+                {bankSoal.length === 0 ? 
+                    <>
+                    </>
+                :
+                    <>
+                        <Button title="Edit Soal" link={'/edit_soal/'+ id } />
+                        <Button link="/" title="Hapus Soal" onClick={e =>{setDeleteData(true)}} />
+                    </>
+                }
             </div>
             <span>mata pelajaran </span>
             <select value={selectMapel} onChange={selectMapelChanged}>   
