@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/appbimbel-frontend/static/css/main.cf669bb7.chunk.css",
-    "main.js": "/appbimbel-frontend/static/js/main.0e8890aa.chunk.js",
-    "main.js.map": "/appbimbel-frontend/static/js/main.0e8890aa.chunk.js.map",
+    "main.js": "/appbimbel-frontend/static/js/main.a4e98b69.chunk.js",
+    "main.js.map": "/appbimbel-frontend/static/js/main.a4e98b69.chunk.js.map",
     "runtime-main.js": "/appbimbel-frontend/static/js/runtime-main.ba95c22c.js",
     "runtime-main.js.map": "/appbimbel-frontend/static/js/runtime-main.ba95c22c.js.map",
-    "static/js/2.73a099ca.chunk.js": "/appbimbel-frontend/static/js/2.73a099ca.chunk.js",
-    "static/js/2.73a099ca.chunk.js.map": "/appbimbel-frontend/static/js/2.73a099ca.chunk.js.map",
+    "static/js/2.29385e92.chunk.js": "/appbimbel-frontend/static/js/2.29385e92.chunk.js",
+    "static/js/2.29385e92.chunk.js.map": "/appbimbel-frontend/static/js/2.29385e92.chunk.js.map",
     "static/js/3.29b3f0ed.chunk.js": "/appbimbel-frontend/static/js/3.29b3f0ed.chunk.js",
     "static/js/3.29b3f0ed.chunk.js.map": "/appbimbel-frontend/static/js/3.29b3f0ed.chunk.js.map",
     "index.html": "/appbimbel-frontend/index.html",
     "static/css/main.cf669bb7.chunk.css.map": "/appbimbel-frontend/static/css/main.cf669bb7.chunk.css.map",
-    "static/js/2.73a099ca.chunk.js.LICENSE.txt": "/appbimbel-frontend/static/js/2.73a099ca.chunk.js.LICENSE.txt"
+    "static/js/2.29385e92.chunk.js.LICENSE.txt": "/appbimbel-frontend/static/js/2.29385e92.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.ba95c22c.js",
-    "static/js/2.73a099ca.chunk.js",
+    "static/js/2.29385e92.chunk.js",
     "static/css/main.cf669bb7.chunk.css",
-    "static/js/main.0e8890aa.chunk.js"
+    "static/js/main.a4e98b69.chunk.js"
   ]
 }
