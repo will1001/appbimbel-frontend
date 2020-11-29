@@ -14,7 +14,7 @@ function App() {
          <Switch>
           <Route path="/add_soal" children={<AddForm />} />
           <Route path="/edit_soal/:id" children={<EditForm />} />
-          <Route path="/" exact children={<HomeSoal />}>
+          <Route path="/" exact children={<HomeSoal />} />
         </Switch>
        </HashRouter>
       
