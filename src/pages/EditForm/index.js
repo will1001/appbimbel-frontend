@@ -130,7 +130,7 @@ function EditForm(props) {
                      
                     axios.get('/mapel?id=' + resSoal.id_mapel)
                         .then(function (response) {
-                            setMapel(response.data);
+                            // setMapel(response.data);
                             setSelectMapel(response.data[0].id)
                         });
                     
@@ -142,13 +142,13 @@ function EditForm(props) {
 
                     axios.get('/tingkat_kesulitan?id=' + resSoal.id_tingkat_kesulitan)
                     .then(function (response) {
-                        setTingkatKesulitan(response.data);
+                        // setTingkatKesulitan(response.data);
                         setSelectTingkatKesulitan(response.data[0].id)
                     });
 
                     axios.get('/bab_soal?id=' + resSoal.id_bab_soal)
                         .then(function (response) {
-                            setBabSoal(response.data);
+                            // setBabSoal(response.data);
                             setSelectBabSoal(response.data[0].id);
                         });
                     
@@ -159,6 +159,28 @@ function EditForm(props) {
                     setPembahasan(resSoal.pembahasan);
 
                 });
+            
+             axios.get('/mapel')
+                .then(function (response) {
+                    setMapel(response.data);
+                });
+            
+            axios.get('/kelas')
+                .then(function (response) {
+                    setKelas(response.data);
+                });
+            
+            axios.get('/tingkat_kesulitan')
+                .then(function (response) {
+                    setTingkatKesulitan(response.data);
+                });
+            
+              axios.get('/bab_soal?id_mapel=' + selectMapel)
+                .then(function (response) {
+                    setBabSoal(response.data);
+            });
+            
+                
                 
            
             

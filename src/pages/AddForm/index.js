@@ -279,6 +279,7 @@ function AddForm(props) {
                 {/* <option value="" onClick={tambahDeskripsi}>+</option> */}
             </select>
             <button onClick={(title) => tambahDeskripsi("Mapel")}>+</button>
+            <br/>
             <span>kelas </span>
             <select value={selectKelas} onChange={selectKelasChanged}>
                 <option value="" disabled ></option>
@@ -287,6 +288,7 @@ function AddForm(props) {
                 ))}
             </select>
             <button onClick={(title) => tambahDeskripsi("Kelas")}>+</button>
+            <br/>
             <span>Bab </span>
             <select value={selectbabSoal} onChange={selectBabSoalChanged}>
                 <option value="" disabled ></option>
@@ -295,6 +297,7 @@ function AddForm(props) {
                 ))}
             </select>
             <button onClick={(title) => tambahDeskripsi("Bab Soal")}>+</button>
+            <br/>
             <span>tingkat kesulitan </span>
             <select value={selectTingkatKesulitan} onChange={selectTingkatKesulitanChanged}>
                 <option value="" disabled ></option>
@@ -303,13 +306,14 @@ function AddForm(props) {
                 ))}
             </select>
             <button onClick={(title) => tambahDeskripsi("Tingkat Kesulitan")}>+</button>
+            <br/>
             <span>tipe soal : </span>
             <select value={tipeSoal} onChange={tipeSoalChanged}>
                 <option value="essai">essai</option>
                 <option value="pilgan">pilihan ganda</option>
             </select>
             <br />
-            <span>Generate Latex : </span>
+            {/* <span>Generate Latex : </span> */}
             
             <br />
             <span>soal : </span>
