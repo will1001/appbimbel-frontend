@@ -1,8 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import { HashRouter, Switch, Route } from 'react-router-dom'
 
 //components
 import HomeSoal from './pages/HomeSoal'
@@ -14,15 +10,13 @@ import './App.css';
 function App() {
   return (
     <div>
-      <Router>
+      <HashRouter basename="/">
          <Switch>
           <Route path="/add_soal" children={<AddForm />} />
           <Route path="/edit_soal/:id" children={<EditForm />} />
-          <Route path="/">
-            <HomeSoal />
-          </Route>
+          <Route path="/" exact children={<HomeSoal />}>
         </Switch>
-       </Router>
+       </HashRouter>
       
     </div>
   );
