@@ -177,8 +177,8 @@ function EditForm(props) {
 
     return (
         <div className={styles.container}>
-            {"id = "+id}
-            <br />
+            {/* {"id = "+id}
+            <br /> */}
             
             {/* <div className="App">
                 <h2>Using CKEditor 5 build in React</h2>
@@ -276,20 +276,35 @@ function EditForm(props) {
                 <div></div>
             :
                 <div className={styles.pilihan__ganda}>
-                    <span>Pilihan A</span>
+                     <span>Pilihan A</span>
+                     <div className={styles.editor}>
                     <textarea value={pil_a} onChange={e => {setPil_a(e.target.value)}} cols="30" rows="10"></textarea>
+                    <Latex>{pil_a}</Latex>
+                    </div>
                     <br />
                     <span>Pilihan B</span>
+                     <div className={styles.editor}>
                     <textarea value={pil_b} onChange={e => {setPil_b(e.target.value)}} cols="30" rows="10"></textarea>
+                    <Latex>{pil_b}</Latex>
+                    </div>
                     <br />
                     <span>Pilihan C</span>
+                     <div className={styles.editor}>
                     <textarea value={pil_c} onChange={e => {setPil_c(e.target.value)}} cols="30" rows="10"></textarea>
+                    <Latex>{pil_c}</Latex>
+                    </div>
                     <br />
                     <span>Pilihan D</span>
+                    <div className={styles.editor}>
                     <textarea value={pil_d} onChange={e => {setPil_d(e.target.value)}} cols="30" rows="10"></textarea>
+                    <Latex>{pil_d}</Latex>
+                    </div>
                     <br />
                     <span>Pilihan E</span>
+                    <div className={styles.editor}>
                     <textarea value={pil_e} onChange={e => {setPil_e(e.target.value)}} cols="30" rows="10"></textarea>
+                    <Latex>{pil_e}</Latex>
+                    </div>
                     <br/>
                 </div>
             }

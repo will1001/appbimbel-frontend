@@ -1,7 +1,7 @@
 .container{
     padding: 10px;
     .popup__menu__container{
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -20,13 +20,6 @@
         }
         .button__group{
             margin-top: 10px;
-            // display: flex;
-            // justify-content: right;
-            // flex-direction: row;
-            // align-self: flex-end;
-            // align-items: flex-end;
-            // align-content: flex-end;
-            // justify-self: flex-end;
         }
 
     }

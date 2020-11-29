@@ -4,11 +4,13 @@ import styles from './styles.module.css'
 import axios from '../../axios'
 import ReactHtmlParser from 'react-html-parser';
 // import CKEditor from 'ckeditor4-react';
-// import { CKEditor } from '@ckeditor/ckeditor5-react';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import CKEditor from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from 'ckeditor5-classic-with-mathtype';
 // import MathType from '@wiris/mathtype-ckeditor5';
+// import MathType from '@wiris/mathtype-ckeditor5';
+// import MathType from '@ckeditor/ckeditor5-react/';
 
 
 function AddForm(props) {
@@ -307,12 +309,18 @@ function AddForm(props) {
                 <option value="pilgan">pilihan ganda</option>
             </select>
             <br />
+            <span>Generate Latex : </span>
+            
+            <br />
             <span>soal : </span>
             <br/>
             <div className={styles.editor}>
             <textarea value={soal} onChange={soalType} name="" id="" cols="30" rows="10"></textarea>            
+                {/* <Latex dangerouslySetInnerHTML={{__html: soal}}></Latex> */}
                 <Latex>{soal}</Latex>
+                {/* <div dangerouslySetInnerHTML={{__html: soal}}></div> */}
                 {/* {ReactHtmlParser(soal)} */}
+                {/* {Latex.render("c = \\pm\\sqrt{a^2 + b^2}")} */}
             </div>
             <br />
             {tipeSoal === "essai" ?
@@ -320,19 +328,34 @@ function AddForm(props) {
             :
                 <div className={styles.pilihan__ganda}>
                     <span>Pilihan A</span>
+                     <div className={styles.editor}>
                     <textarea value={pil_a} onChange={e => {setPil_a(e.target.value)}} cols="30" rows="10"></textarea>
+                    <Latex>{pil_a}</Latex>
+                    </div>
                     <br />
                     <span>Pilihan B</span>
+                     <div className={styles.editor}>
                     <textarea value={pil_b} onChange={e => {setPil_b(e.target.value)}} cols="30" rows="10"></textarea>
+                    <Latex>{pil_b}</Latex>
+                    </div>
                     <br />
                     <span>Pilihan C</span>
+                     <div className={styles.editor}>
                     <textarea value={pil_c} onChange={e => {setPil_c(e.target.value)}} cols="30" rows="10"></textarea>
+                    <Latex>{pil_c}</Latex>
+                    </div>
                     <br />
                     <span>Pilihan D</span>
+                    <div className={styles.editor}>
                     <textarea value={pil_d} onChange={e => {setPil_d(e.target.value)}} cols="30" rows="10"></textarea>
+                    <Latex>{pil_d}</Latex>
+                    </div>
                     <br />
                     <span>Pilihan E</span>
+                    <div className={styles.editor}>
                     <textarea value={pil_e} onChange={e => {setPil_e(e.target.value)}} cols="30" rows="10"></textarea>
+                    <Latex>{pil_e}</Latex>
+                    </div>
                     <br/>
                 </div>
             }
@@ -364,7 +387,7 @@ function AddForm(props) {
             </div>
             <br />
             
-            <Button title="Submit" onClick={addData} />
+            <Button title="Submit" link="/" onClick={addData} />
         </div>
     )
 }

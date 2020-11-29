@@ -4,6 +4,7 @@ import Button from '../../component/Button'
 import axios from '../../axios'
 
 function HomeSoal(props) {
+    const Latex = require('react-latex');
     const [bankSoal, setBankSoal] = useState([]);
     const [mapel, setMapel] = useState([]);
     const [kelas, setKelas] = useState([]);
@@ -178,7 +179,7 @@ function HomeSoal(props) {
                 <div key={item.id} className="">
                     {/* //    <option key={item.id} value={item.id}>{item.deskripsi}</option> */}
                 <strong>Soal :</strong>
-                <p>{item.soal}</p>
+                <p><Latex>{item.soal}</Latex></p>
                     {item.tipe_soal === "pilgan" ? 
                         <div className="">
                             <p>A. {item.pil_a}</p>
@@ -191,9 +192,9 @@ function HomeSoal(props) {
                         <div className=""></div>
                 }    
                 <strong>Jawaban :</strong>
-                <p>{item.jawaban}</p>
+                <p><Latex>{item.jawaban}</Latex></p>
                 <strong>Pembahasan :</strong>
-                <p>{item.pembahasan}</p>
+                <p><Latex>{item.pembahasan}</Latex></p>
                 {/* <a href="#0"></a> */}
                 </div>
             ))}
