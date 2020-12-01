@@ -8,9 +8,10 @@
         margin-right: 10px;
     }
     .editor{
-        display: flex;
+       display: flex;
+        flex-direction: column;
         textarea{
-            margin-right: 10px;
+            margin-bottom: 10px;
         }
     }
 }

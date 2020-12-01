@@ -11,6 +11,8 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import MathType from '@wiris/mathtype-ckeditor5';
 // import MathType from '@wiris/mathtype-ckeditor5';
 // import MathType from '@ckeditor/ckeditor5-react/';
+import 'katex/dist/katex.min.css';
+import TeX from '@matejmazur/react-katex';
 
 
 function AddForm(props) {
@@ -321,7 +323,8 @@ function AddForm(props) {
             <div className={styles.editor}>
             <textarea value={soal} onChange={soalType} name="" id="" cols="30" rows="10"></textarea>            
                 {/* <Latex dangerouslySetInnerHTML={{__html: soal}}></Latex> */}
-                <Latex>{soal}</Latex>
+                <Latex>{'$' + soal.replaceAll(String.fromCharCode(32),String.fromCharCode(92)+String.fromCharCode(32)) + '$'}</Latex>
+                {/* <Latex displayMode={true}>{soal}</Latex> */}
                 {/* <div dangerouslySetInnerHTML={{__html: soal}}></div> */}
                 {/* {ReactHtmlParser(soal)} */}
                 {/* {Latex.render("c = \\pm\\sqrt{a^2 + b^2}")} */}
