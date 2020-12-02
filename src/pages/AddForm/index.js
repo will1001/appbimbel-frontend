@@ -40,6 +40,17 @@ function AddForm(props) {
     const [addDeskripsiClicked, setAddDeskripsiClicked] = useState(false);
 
 
+    const charReplace = (sentences, params) => {
+        let temp = sentences;
+        const result = params.map(item => {
+            temp = temp.replaceAll(item.before, item.after);
+            return temp;
+        })
+
+        return temp;
+        
+    }
+
     const selectMapelChanged = (e) => {
         setSelectMapel(e.target.value);
     }
@@ -323,7 +334,23 @@ function AddForm(props) {
             <div className={styles.editor}>
             <textarea value={soal} onChange={soalType} name="" id="" cols="30" rows="10"></textarea>            
                 {/* <Latex dangerouslySetInnerHTML={{__html: soal}}></Latex> */}
-                <Latex>{'$' + soal.replaceAll(String.fromCharCode(32),String.fromCharCode(92)+String.fromCharCode(32)) + '$'}</Latex>
+                <div className={styles.text}>
+                    <Latex>{'$' +
+                        charReplace(soal,
+                            [
+                                {
+                                    'before': String.fromCharCode(32),
+                                    'after': String.fromCharCode(92) + String.fromCharCode(32)
+                                },
+                                {
+                                    'before': String.fromCharCode(10),
+                                    'after':    String.fromCharCode(92) + String.fromCharCode(92)
+                                }
+                            ]
+                        )
+                             +
+                        '$'}</Latex>
+                </div>
                 {/* <Latex displayMode={true}>{soal}</Latex> */}
                 {/* <div dangerouslySetInnerHTML={{__html: soal}}></div> */}
                 {/* {ReactHtmlParser(soal)} */}
