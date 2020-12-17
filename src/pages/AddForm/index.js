@@ -2,17 +2,22 @@ import React,{ useEffect, useState } from 'react'
 import Button from '../../component/Button'
 import styles from './styles.module.css'
 import axios from '../../axios'
-import ReactHtmlParser from 'react-html-parser';
+// import ReactHtmlParser from 'react-html-parser';
 // import CKEditor from 'ckeditor4-react';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import CKEditor from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from 'ckeditor5-classic-with-mathtype';
 // import MathType from '@wiris/mathtype-ckeditor5';
 // import MathType from '@wiris/mathtype-ckeditor5';
 // import MathType from '@ckeditor/ckeditor5-react/';
+// import CKEditor from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from 'ckeditor5-classic-with-mathtype';
 import 'katex/dist/katex.min.css';
-import TeX from '@matejmazur/react-katex';
+// import TeX from '@matejmazur/react-katex';
+// import { MathComponent } from 'mathjax-react'
+import SiunitX from '../../JSON/Siunitx'
+
 
 
 function AddForm(props) {
@@ -39,6 +44,43 @@ function AddForm(props) {
     const [inputDeskripsi, setInputDeskripsi] = useState("");
     const [addDeskripsiClicked, setAddDeskripsiClicked] = useState(false);
 
+    // const data = soal.replaceAll(String.fromCharCode(32), '')
+    //                     .replaceAll(String.fromCharCode(13), '')
+    //                     .replaceAll("{}&",'');
+    //                     console.log("dataadnda : "+data);
+    //                     // console.log(/\@(.*?)\@/g.test(data))
+
+    const replaceSiunitx = (mode , str) => {
+        let result;
+        let CodeMatch = false;
+        
+        SiunitX.map((item) => {
+            // console.log("mode = "+ mode);
+            // console.log("item.code = "+ item.code);
+            // console.log("str= "+ str);
+            // console.log(mode === "");
+            // console.log("item code = " + item.code);
+            // const code = String.raw`${item.code}
+            // console.log("code = " + code);
+            if (str === item.code && mode === "" && CodeMatch === false) {
+                // console.log(item.translation);
+                // console.log(SiunitX);
+                // return item.translation;
+                result =  item.translation;
+                CodeMatch = true;
+            } else if (str === item.code && mode === "per-mode=symbol" && CodeMatch === false) { 
+                result = item["per-mode=symbol"];
+                CodeMatch = true;
+            } else if(str !== item.code && CodeMatch === false){
+                result = str;    
+            }
+        })
+        // console.log(result);
+        return result;
+    }
+
+    // console.log(SiunitX);
+
 
     const charReplace = (sentences, params) => {
         let temp = sentences;
@@ -48,6 +90,16 @@ function AddForm(props) {
         })
 
         return temp;
+        
+    }
+
+    const replaceFormulasLatex = (str) => {
+        const inlineEquation = str.match(/\$(.*?)\$/g);
+        const result = inlineEquation.map(i => {
+            return i.replace(/\$/g, "");
+        })
+        // console.log(str.split(" "));
+        return result;
         
     }
 
@@ -214,10 +266,46 @@ function AddForm(props) {
             fetchdata();
             setAddDeskripsiClicked(false);
         }
-    }, [selectMapel,addDeskripsiClicked]);
+    }, [selectMapel, addDeskripsiClicked]);
+    
+    // const str = ""
 
     return (
         <div className={styles.container}>
+            
+             {/* <CKEditor
+                    editor={ClassicEditor}
+                    config={{
+                        toolbar: {
+                            items: [
+                                'heading', 'MathType', 'ChemType',
+                                '|',
+                                'bold',
+                                'italic',
+                                // 'link',
+                                // 'bulletedList',
+                                // 'numberedList',
+                                'imageUpload',
+                                // 'mediaEmbed',
+                                // 'insertTable',
+                                // 'blockQuote',
+                                'undo',
+                                'redo'
+                            ]
+                        },
+                    }}
+                    data="<p>Hello from CKEditor 5 with MathType!</p>"
+                     onChange={ ( event, editor ) => {
+                        const data = editor.getData();
+                        console.log(data);
+                    } }
+                    onInit={editor => {
+                        // You can store the "editor" and use when it is needed.
+                        console.log( 'Editor is ready to use!', editor );
+                    }}
+                /> */}
+            
+                <br/>
             {popUpMenu ? 
             <div className={styles.popup__menu__container}>
                 <div className={styles.popup__menu}>
@@ -232,56 +320,6 @@ function AddForm(props) {
             :
             ""
             }
-            {/* <div className="App">
-                <h2>Using CKEditor 5 build in React</h2>
-                <CKEditor
-                    editor={ClassicEditor}
-                    // config={{
-                    //     plugins: [MathType],
-                    //      toolbar: [ 'bold', 'italic','MathType', 'ChemType', ]
-                    // }}
-                    data={soal}
-                    onReady={ editor => {
-                        // You can store the "editor" and use when it is needed.
-                        console.log( 'Editor is ready to use!', editor );
-                    } }
-                    onChange={ ( event, editor ) => {
-                        const data = editor.getData();
-                        setSoal(data);
-                        console.log( { event, editor, data } );
-                    } }
-                    onBlur={ ( event, editor ) => {
-                        console.log( 'Blur.', editor );
-                    } }
-                    onFocus={ ( event, editor ) => {
-                        console.log( 'Focus.', editor );
-                    } }
-                />
-            </div> */}
-            {/* <CKEditor
-                editor={ClassicEditor}
-                // config={{
-                //         plugins: [MathType],
-                //         toolbar: {
-                //             items:['MathType','ChemType']
-                //         }
-                //     }}
-                    // data="<p>Hello from CKEditor 5!</p>"
-                    onReady={ editor => {
-                        // You can store the "editor" and use when it is needed.
-                        console.log( 'Editor is ready to use!', editor );
-                    } }
-                    onChange={ ( event, editor ) => {
-                        const data = editor.getData();
-                        console.log( { event, editor, data } );
-                    } }
-                    onBlur={ ( event, editor ) => {
-                        console.log( 'Blur.', editor );
-                    } }
-                    onFocus={ ( event, editor ) => {
-                        console.log( 'Focus.', editor );
-                    } }
-                /> */}
             <span>mata pelajaran </span>
             <select value={selectMapel} onChange={selectMapelChanged}>   
             <option value="" disabled ></option>
@@ -333,8 +371,8 @@ function AddForm(props) {
             <br/>
             <div className={styles.editor}>
             <textarea value={soal} onChange={soalType} name="" id="" cols="30" rows="10"></textarea>            
-                {/* <Latex dangerouslySetInnerHTML={{__html: soal}}></Latex> */}
-                <div className={styles.text}>
+                <Latex dangerouslySetInnerHTML={{__html: soal}}></Latex>
+                {/* <div className={styles.text}>
                     <Latex>{'$' +
                         charReplace(soal,
                             [
@@ -350,11 +388,117 @@ function AddForm(props) {
                         )
                              +
                         '$'}</Latex>
-                </div>
+                </div> */}
                 {/* <Latex displayMode={true}>{soal}</Latex> */}
+                {/* <p>aslkhdkjasd <Latex>{String.raw`$\int_0^1 x^2\ dx$`}</Latex> asldjlaksd <Latex displayMode={true}>{String.raw`$\int_0^1 x^2\ dx$`}</Latex></p> */}
                 {/* <div dangerouslySetInnerHTML={{__html: soal}}></div> */}
                 {/* {ReactHtmlParser(soal)} */}
                 {/* {Latex.render("c = \\pm\\sqrt{a^2 + b^2}")} */}
+                {/* {soal}
+                <br/>
+                {soal.split("$").map(i => (
+                    <div>{i}</div>
+                ))}
+                <br />
+                <h1>subs</h1>
+                {soal.substring(
+                    soal.lastIndexOf(":") + 1, 
+                    soal.lastIndexOf(";")
+                )} */}
+                {/* <Latex>{ soal }</Latex> */}
+              
+                {soal.split(" ").map((item,index) => {
+                    
+                    // console.log(item);
+                    // console.log(/(@)(.+?)(@)/s.test(item));
+                    //     if (/(@)(.+?)(@)/s.test(item)) {
+                        
+                    //     const data = item.replaceAll(String.fromCharCode(32), '')
+                    //     .replaceAll(String.fromCharCode(13), '')
+                    //     .replaceAll("{}&",'');
+                    //         console.log("dataadnda : " + data);
+                            
+                    //     // console.log(/\@(.*?)\@/g.test(data))
+                    //         // console.log("data = ="+data);
+                    //     // let result = data.replaceAll(/\\si{(.*?)}{.*?}/g, '');
+                    //     // result = result.replaceAll(/\\SI|\\si|\\NUM|\\num/g, '');
+                    //     let results;
+                    //     results = data.replaceAll("@", "$$")
+                    //     const findSiunitX = data.match(/\\si{(.*?)}{.*?}/g);
+                    //     // console.log(a);
+                    //     // return (<Latex key={index} displayMode={true}>{data.replaceAll("@","$")}</Latex>)
+                    // //       console.log("data = "+data);
+                    // //       console.log("cond = "+/\\SI|\\si|\\NUM|\\num/g.test(data));
+                    // //     if (/\\SI|\\si|\\NUM|\\num/g.test(data)) {
+                    // //         const a = data.match(/(?<=\\si).*/g); 
+                    //     findSiunitX.map((item) => {
+                    //         const result = item.match(/(?<=\{)(.*?)(?=\})/g);
+                    //         const mode = item.match(/(?<=\[)(.*?)(?=\])/g);
+                    //         //         console.log(a);
+                            
+                        
+                    //         if (result.length > 1) {
+                    //             let param1;
+                    //             let param2;
+                    //             if (mode === null) {
+                    //                 param1 = replaceSiunitx("", result[0]);
+                    //                 param2 = replaceSiunitx("", result[1]);
+                    //             } else {
+                    //                 param1 = replaceSiunitx(mode[0], result[0]);
+                    //                 param2 = replaceSiunitx(mode[0], result[1]);
+                    //             }
+                    //             // console.log("result = " + param1 + param2);
+                    //             results = results.replace(/\\si{(.*?)}{.*?}/s, param1 + param2);
+                    //             // return (<Latex key={index}>{abc}</Latex>);
+                    //         } else {
+                    //             let param1;
+                    //             mode === null ? param1 = replaceSiunitx("", result[0]) : param1 = replaceSiunitx(mode[0], result[0]);
+                    //             // console.log("result param2 = "+param2);
+                    //             // return (<Latex key={index} >{param1}</Latex>);
+                    //         }
+                    //     });
+                    //         return (<Latex key={index}>{results}</Latex>);
+
+                            
+
+                    // }else{
+                    //     return (<Latex key={index} displayMode={true}>{data.replaceAll("@","$")}</Latex>)
+                    // }
+                        
+                    // }
+                    //  else if (/\$(.*?)\$/g.test(item)) {
+                    //     return (<Latex key={index}>{ item + " " }</Latex>)
+                    // }
+                    //  else if (/\\begin{align*}(.*?)\\end{align*}/g.test(item)) {
+                    //     return (<Latex key={index} displayMode={true}>{ item }</Latex>)
+                    // }
+                    // else if (/\\SI|\\si|\\NUM|\\num/g.test(item)) {
+                    //     const result = item.match(/(?<=\{)(.*?)(?=\})/g);
+                    //     const mode = item.match(/(?<=\[)(.*?)(?=\])/g);
+                        
+                    //     if (result.length > 1) {
+                    //         let param1;
+                    //         let param2;
+                    //         if (mode === null) {
+                    //             param1 = replaceSiunitx("",result[0]);
+                    //             param2 = replaceSiunitx("",result[1]);
+                    //         } else {
+                    //             param1 = replaceSiunitx(mode[0],result[0]);
+                    //             param2 = replaceSiunitx(mode[0],result[1]);
+                    //         }
+                    //         // console.log("result param2 = "+param2);
+                    //         return (<Latex key={index}>{param1 + " " + param2 + " "}</Latex>);
+                    //     } else {
+                    //         let param1;
+                    //         mode === null ? param1 = replaceSiunitx("", result[0]) : param1 = replaceSiunitx(mode[0], result[0]);
+                    //         return (<Latex key={index}>{param1}</Latex>);
+                    //     }
+
+                    // }
+                    // else{
+                    //     return (<span key={index}>{ item + " " }</span>);
+                    // }
+                // })}
             </div>
             <br />
             {tipeSoal === "essai" ?
@@ -398,7 +542,12 @@ function AddForm(props) {
             {tipeSoal === "essai" ?
             <div className={styles.editor}>
                 <textarea value={jawaban} onChange={jawabanType} name="" id="" cols="30" rows="10"></textarea>
-                <Latex>{jawaban}</Latex>
+                    <Latex>{jawaban}
+                    {/* <Latex displayMode={true}>$\pi$</Latex> */}
+                    </Latex>
+                    {/* {ReactHtmlParser(jawaban)} */}
+                    {/* {jawaban} */}
+                    {/* <div dangerouslySetInnerHTML={{__html: jawaban}}></div> */}
             </div>
                 :
             <div className={styles.jwb_pilgan}>
