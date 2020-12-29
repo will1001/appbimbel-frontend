@@ -32,6 +32,11 @@ function AddForm(props) {
     const [selectTingkatKesulitan, setSelectTingkatKesulitan] = useState("");
     const [tipeSoal, setTipeSoal] = useState("essai");
     const [soal, setSoal] = useState("");
+    const [imgSoal, setImgSoal] = useState([]);
+    const [imgSoalFile, setImgSoalFile] = useState([]);
+    const [imgSoalTotal, setImgSoalTotal] = useState(0);
+    const [soalCache, setSoalCache] = useState("");
+    const [soalConverted, setSoalConverted] = useState("");
     const [jawaban, setJawaban] = useState("");
     const [pembahasan, setPembahasan] = useState("");
     const [pil_a, setPil_a] = useState("");
@@ -43,36 +48,405 @@ function AddForm(props) {
     const [popUpTitle, setPopUpTitle] = useState("");
     const [inputDeskripsi, setInputDeskripsi] = useState("");
     const [addDeskripsiClicked, setAddDeskripsiClicked] = useState(false);
+    const [onImageChangeClicked, setOnImageChangeClicked] = useState(false);
+    const [imgSoalTotalChangedPlus, setOnIimgSoalTotalChangedPlus] = useState(false);
+    const [imgSoalTotalChangedMinus, setOnIimgSoalTotalChangedMinus] = useState(false);
 
-    // const data = soal.replaceAll(String.fromCharCode(32), '')
-    //                     .replaceAll(String.fromCharCode(13), '')
-    //                     .replaceAll("{}&",'');
-    //                     console.log("dataadnda : "+data);
-    //                     // console.log(/\@(.*?)\@/g.test(data))
+    const onImageChangeActivated = () => {
+        console.log("ture");
+        setOnImageChangeClicked(true);
+        // onImageChange.bind(this, input);
+    }
+
+    const cekimgsoal = () => {
+        console.log(imgSoal);
+        setImgSoal(imgSoal);
+        console.log("cek index0 "+imgSoal[0]);
+        console.log("cek index1 "+imgSoal[1]);
+        console.log("cek index2 "+imgSoal[2]);
+        imgSoal.map((item, index) => {
+            console.log("index = "+index);
+            // console.log(item);
+        })
+    }
+    
+
+    const onImageChange = (input, event) => {
+        setOnImageChangeClicked(true);
+        let files = event.target.files;
+        setImgSoalFile(imgSoal => imgSoal.concat(files[0]));
+        
+        if (FileReader && files && files.length) {
+            let reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = e => {
+                setImgSoal(imgSoal => imgSoal.concat(e.target.result));
+                setImgSoalTotal(imgSoalTotal => imgSoalTotal + 1);
+                // console.log("sebelum "+imgSoalTotal);
+                // setOnIimgSoalTotalChangedPlus(true);
+                // console.log("sedudah "+imgSoalTotal);
+                //  console.log("target = " + e.target.result);
+                //  console.log("id = "+id);
+                // console.log("imgsoal[id] = "+imgSoal[1]);
+            };
+            var curPos =  
+        document.getElementById(input).selectionStart; 
+        // console.log("length = "+imgSoal.length); 
+        let x;
+        let text_to_insert = " img"+(imgSoal.length)+" ";
+        switch (input) {
+            case "soal":
+                x = soal; 
+                setSoal(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+            case "jawaban":
+                x = jawaban; 
+                setJawaban(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+                case "pembahasan":
+                x = pembahasan; 
+                setPembahasan(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+            case "pil_a":
+                x = pil_a; 
+                setPil_a(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+                case "pil_b":
+                    x = pil_b; 
+                    setPil_b(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+            case "pil_c":
+                x = pil_c; 
+                setPil_c(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+            case "pil_d":
+                x = pil_d; 
+                setPil_d(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+                case "pil_e":
+                    x = pil_e; 
+                    setPil_e(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                    break;
+        
+                    default:
+                        break;
+                    }
+        }
+       
+        
+                    
+                    
+                    
+    }
+                
+    // const addImage = (inputType) => {
+    //     const div = document.createElement('div');
+    //     const input = document.createElement('input');
+    //     const button = document.createElement('button');
+    //     setimgSoalTotal(imgSoalTotal => imgSoalTotal + 1);
+    //     // console.log(imgSoalTotal);
+    //     div.class = "img__button";
+    //     input.type = "file";
+    //     input.onchange = onImageChange.bind(this, "soal");;
+    //     button.textContent = "-"+ imgSoalTotal;
+    //     button.onclick = () => removeImage("soal",imgSoalTotal);
+    //     // console.log(inputType);
+    //     // console.log(input);
+    //     // aa
+    //     document.getElementById('img__group__soal').appendChild(div);
+    //     div.appendChild(input);
+    //     div.appendChild(button);
+    // }
+
+    const removeImageActivated = () => {
+         setOnImageChangeClicked(true);
+    }
+    
+    const removeImage = (input,id) => {
+        // var list = document.getElementById("img__group__soal");   // Get the <ul> element with id="myList"
+        // var idButton = document.getElementById("img__button" + id);   // Get the <ul> element with id="myList"
+        // console.log("list.length");
+        // console.log(list.childNodes[0]);
+        // console.log(list);
+        
+        // console.log("id = "+id);
+        // // console.log(list.childNodes[id]);
+        // // console.log(imgSoal);
+        // // console.log(imgSoal[0]);
+        // console.log("imgsoal[id] = " + imgSoal[id]);
+        
+        // if (typeof imgSoal[id] !== 'undefined') {
+        //     setImgSoal(imgSoal => imgSoal.splice(id, 1));
+        // } else {
+        //     console.log("null imgsoal");
+        //     return 0;
+        // }
+       
+        // list.removeChild(list.childNodes[id]);  
+        // console.log("sebelum "+imgSoalTotal);
+        // setOnIimgSoalTotalChangedMinus(true)
+        // console.log("sedudah "+imgSoalTotal);
+        
+        // document.getElementById("#soal").value = "";
+
+        // if()
+        let imgRemove;
+        switch (input) {
+            case "soal":
+                 imgRemove = soal.replace(" img" + id + " ", "");
+                 setSoal(imgRemove);
+                break;
+            case "jawaban":
+                 imgRemove = jawaban.replace(" img" + id + " ", "");
+                 setJawaban(imgRemove);
+                break;
+            case "pembahasan":
+                imgRemove = pembahasan.replace(" img" + id + " ", "");
+                 setPembahasan(imgRemove);
+                break;
+            case "pil_a":
+                imgRemove = pil_a.replace(" img" + id + " ", "");
+                 setPil_a(imgRemove);
+                break;
+                case "pil_b":
+                    imgRemove = pil_b.replace(" img" + id + " ", "");
+                 setPil_b(imgRemove);
+                break;
+            case "pil_c":
+                imgRemove = pil_c.replace(" img" + id + " ", "");
+                 setPil_c(imgRemove);
+                break;
+            case "pil_d":
+                imgRemove = pil_d.replace(" img" + id + " ", "");
+                 setPil_d(imgRemove);
+                break;
+            case "pil_e":
+                    imgRemove = pil_e.replace(" img" + id + " ", "");
+                 setPil_e(imgRemove);
+                    break;
+        
+            default:
+                    break;
+            }
+        
+    }
+
+    const translationLatexPreview = (input,item) => {
+       if (/\$(.*?)\$/s.test(item)) {
+            return (<Latex>{item+" "}</Latex>);
+        } else if (/@(.*?)@/s.test(item)) {
+            return (<Latex displayMode={true}>{item.replaceAll("@","$$")+" "}</Latex>);
+        } else if (/img\d+/s.test(item)) {
+           const numberImages = item.match(/(?<=img)\d+/s);
+        //    console.log("numberImages[0] = " + numberImages[0]);
+        //    console.log("imgSoal[numberImages[0] = " + imgSoal[numberImages[0]]);
+           return (
+               <div className="img__group" id="img__group__soal">
+                   <img src={imgSoal[numberImages[0]]} alt="aad" />
+                   <button style={{ position: "absolute",right: "10px",width: "40px",height: "30px",cursor: "pointer"}} onClick={() => removeImage(input, numberImages[0])}>X</button>
+               </div>
+           );
+        } else { 
+            return (<span>{item+" "}</span>);
+        }
+    }
+
+    const cekarraygambar = () => {
+        // const imgGroup = soal.match(/img\d+/g);
+        // console.log("sebelum imgsoal =");
+        // console.log(imgSoal);
+        // console.log(imgSoalFile);
+        // console.log(imgGroup);
+        // console.log(imgSoalTotal);
+        // if (imgGroup && imgSoal) {
+        //     // console.log(imgGroup.length !== imgSoal.length);
+        //     // console.log(imgSoal.length);
+        //     // console.log(imgGroup.length);
+        //     if (imgGroup.length !== imgSoal.length) {
+        //         const numberImages = soal.match(/(?<=img)\d+/gs).sort();
+        //         console.log(numberImages);
+
+        //         for (let i = 0; i < imgSoalTotal; i++) {
+        //             console.log(numberImages[i]);
+        //             console.log(i.toString());
+        //             console.log(numberImages[i] !== i.toString());
+        //             // if (numberImages[i] !== i) {
+        //             //     setImgSoal(imgSoal => imgSoal.splice(i, 1));
+        //             // }
+        //         }
+                 
+        //         // imgSoal.map((item, index) => {
+        //         //     if(typeof numberImages[index] !== 'undefined') {
+        //         //         setImgSoal(imgSoal => imgSoal.splice(index, 1));
+        //         //     }      
+        //         // })           
+        //         setImgSoalTotal(imgSoal.length);
+        //     }
+        // }
+        // console.log("sesudah imgsoal =");
+        // console.log(imgSoal);
+          const data = new FormData() 
+        data.append('file', imgSoalFile)
+        console.warn(imgSoalFile);
+        // let url = "http://localhost:8000/upload.php";
+
+        // axios.post(url, data, { // receive two parameter endpoint url ,form data 
+        // })
+        // .then(res => { // then print response status
+        //     console.warn(res);
+        // })
+    };
+
+      
+
+    
+    const translationLatex = (input) => {
+        
+        if (typeof input !== 'undefined') {
+            let result = input
+                .replaceAll("\\begin{align*}", String.fromCharCode(32) + "@\\begin{aligned}")
+                .replaceAll("\\end{align*}", "\\end{aligned}@" + String.fromCharCode(32))
+                .replaceAll("\\begin{equation*}", String.fromCharCode(32) + "@\\begin{aligned}")
+                .replaceAll("\\end{equation*}", "\\end{aligned}@" + String.fromCharCode(32));
+        
+            const angFunction = result.match(/\\ang{.*?}/g);
+            if (angFunction !== null) {
+                angFunction.map((item) => {
+                    const param = item.match(/{.*?}/g);
+                    const covertItem = replaceAllCurlyBraces(param[0]) + "\\degree";
+                    result = result.replace(item, covertItem);
+                })
+        }
+        const inlineEquation = result.match(/\$(.*?)\$/g);
+        const blockEquation = result.match(/(@)(.+?)(@)/gs);
+        const siunitXCondition =
+            /\\SI{.*?}{.*?}|\\SI\[.*?]{.*?}{.*?}|\\SI{.*?}|\\NUM{.*?}/gi
+        const siunitX1 = result.match(siunitXCondition);
+        
+        console.log("siunitX1");
+        // console.log(imgGroup);
+        // console.log(imgSoal);
+       
+          
+        if (inlineEquation !== null) {
+            inlineEquation.map((item) => {
+            const covertItem = item.replaceAll(String.fromCharCode(32), '\\,');
+            // console.log(covertItem);
+
+            result = result.replace(item, covertItem);
+        })
+        }
+        if (blockEquation !== null) {
+            blockEquation.map((item) => {
+                const covertItem = item
+                .replaceAll(String.fromCharCode(32)+"\\"+String.fromCharCode(32), "\\,")
+                    .replaceAll(String.fromCharCode(32), '\\,')
+                    .replaceAll(String.fromCharCode(13), '')
+                    .replaceAll(String.fromCharCode(9), '')
+                    .replaceAll("{}&","")
+                    .replaceAll("$","")
+                    .replaceAll("=","&=")
+                    .replaceAll("\\approx","&\\approx")
+                    .replaceAll("[per-mode&=symbol]","[per-mode=symbol]")
+                    // .replaceAll("=","&=")
+            
+            result = result.replace(item, covertItem);
+            })
+        }
+
+        if (siunitX1 !== null) {
+            siunitX1.map((item) => {
+                let convertResult = "";
+                let itemProseced;
+                let paramItemProseced;
+                let par;
+                let tothe;
+                if (/tothe/s.test(item)) {
+                    itemProseced = item+"}";
+                } else {
+                    itemProseced = item;
+                }
+                // console.log("siunitX1");
+                // console.log(itemProseced);
+                
+                const mode = itemProseced.match(/\[.*?]/s);
+                const param = itemProseced.match(/{.*?}/g);
+                // console.log("mode = " + mode);
+                // console.log("param = " + param);
+                if (mode !== null) {
+                    param.map((paramItem) => {
+                        if (/tothe/s.test(paramItem)) {
+                            paramItemProseced = paramItem + "}";
+                        } else {
+                            paramItemProseced = paramItem;
+                        }
+                        par = replaceAllCurlyBraces(paramItemProseced);
+                        // console.log("if not null mode = " + mode[0]);
+                        convertResult += replaceSiunitx(mode[0], par) + " ";
+                    })   
+                } else {
+                    param.map((paramItem) => {
+                         if (/tothe/s.test(paramItem)) {
+                             paramItemProseced = paramItem + "}";
+                             const findTothe = paramItemProseced.match(/(?<=tothe).*/s);
+                             tothe = "^{"+replaceAllCurlyBraces(findTothe[0])+"}";
+                             paramItemProseced = paramItemProseced.replaceAll(/(?<=tothe).*/g, "");
+                            //  console.log("paramItemProseced = "+paramItemProseced)
+                            //  console.log("tothe = "+tothe)
+                        } else {
+                             paramItemProseced = paramItem;
+                             tothe= "";
+                        }
+                        par = replaceAllCurlyBraces(paramItemProseced);
+                        convertResult += replaceSiunitx("", par)+tothe+ " ";
+                    })   
+                }
+                convertResult = convertResult.replaceAll(String.fromCharCode(32), '\\,');
+                result = result.replace(itemProseced, convertResult);
+                // console.log("convertResult = " + convertResult);
+            })
+        }
+
+        // console.log("ini hasil resyo = "+result);
+        // setSoalConverted(result);
+        // setSoalCache(soal);
+            return result;
+        } else {
+            return input;
+            // console.log("nothing change")
+        }
+        
+        
+    }
+   
 
     const replaceSiunitx = (mode , str) => {
         let result;
         let CodeMatch = false;
         
         SiunitX.map((item) => {
-            // console.log("mode = "+ mode);
-            // console.log("item.code = "+ item.code);
-            // console.log("str= "+ str);
-            // console.log(mode === "");
-            // console.log("item code = " + item.code);
-            // const code = String.raw`${item.code}
-            // console.log("code = " + code);
+            // console.log("mode replaceunix= " + mode);
             if (str === item.code && mode === "" && CodeMatch === false) {
-                // console.log(item.translation);
-                // console.log(SiunitX);
-                // return item.translation;
                 result =  item.translation;
                 CodeMatch = true;
-            } else if (str === item.code && mode === "per-mode=symbol" && CodeMatch === false) { 
+            } else if (str === item.code && mode === "[per-mode=symbol]" && CodeMatch === false) { 
                 result = item["per-mode=symbol"];
                 CodeMatch = true;
             } else if(str !== item.code && CodeMatch === false){
-                result = str;    
+                if (/-?\d+(?=e).-?\d+/s.test(str) || /(?=e).-?\d+/s.test(str)) {
+                    const pangkat = str.match(/(?<=e).?\d+/s);
+                    const nominal = str.match(/-?\d+(?=e)/s);
+                    if (pangkat !== null && nominal !== null) {
+                        result = nominal[0] + " x 10^{" + pangkat[0]+"}";
+                    } else if (pangkat !== null && nominal === null) {
+                        result = "10^" + pangkat[0];
+                    }else {
+                        result = str;
+                    }
+                } else {
+                    result = str;     
+                }
+                    // result = str;     
             }
         })
         // console.log(result);
@@ -82,13 +456,20 @@ function AddForm(props) {
     // console.log(SiunitX);
 
 
-    const charReplace = (sentences, params) => {
+    const replaceAllMultiCondition = (sentences, params) => {
         let temp = sentences;
         const result = params.map(item => {
             temp = temp.replaceAll(item.before, item.after);
             return temp;
         })
 
+        return temp;
+        
+    }
+    
+    const replaceAllCurlyBraces = (sentences) => {
+        const temp = sentences.replaceAll("{","").replaceAll("}","");
+    
         return temp;
         
     }
@@ -113,6 +494,7 @@ function AddForm(props) {
     
     const soalType = (e) => {
         setSoal(e.target.value)
+        setSoalConverted(e.target.value)
     }
     const jawabanType = (e) => {
         setJawaban(e.target.value)
@@ -190,7 +572,7 @@ function AddForm(props) {
         }
         axios.post('/bank_soal',data)
                 .then(function (response) {
-                    console.log(response.data);
+                    // console.log(response.data);
                 });
     }
     
@@ -231,13 +613,14 @@ function AddForm(props) {
         
         axios.post('/' + tableName,data)
                 .then(function (response) {
-                    console.log(response.data);
+                    // console.log(response.data);
                 });
         
         setPopUpMenu(false);
     }
 
     useEffect(() => {
+        
         async function fetchdata() {
             
             axios.get('/mapel')
@@ -266,7 +649,31 @@ function AddForm(props) {
             fetchdata();
             setAddDeskripsiClicked(false);
         }
-    }, [selectMapel, addDeskripsiClicked]);
+        if (setOnImageChangeClicked) {
+            // setImgSoal(imgSoal => imgSoal.concat("e.target.result"));
+            
+            setOnImageChangeClicked(false);
+        }
+        // if (imgSoalTotalChangedPlus) {
+        //     // setImgSoal(imgSoal => imgSoal.concat("e.target.result"));
+        //     console.log("plus")
+        //     setimgSoalTotal(imgSoalTotal => imgSoalTotal + 1);
+        //     setOnImageChangeClicked(false);
+        // }
+        // if (imgSoalTotalChangedMinus) {
+        //     // setImgSoal(imgSoal => imgSoal.concat("e.target.result"));
+        //     console.log("minus")
+        //     setimgSoalTotal(imgSoalTotal => imgSoalTotal - 1);
+        //     setOnImageChangeClicked(false);
+        // }
+        // if (soalConverted !== null) {
+        //     translationLatex();
+        // }
+        // if (true) {
+        //     setImgSoal(imgSoal => imgSoal.concat("e.target.result"));
+        //     console.log(imgSoal);
+        // }
+    }, [selectMapel, addDeskripsiClicked, soalConverted,soal,onImageChangeClicked,imgSoalTotalChangedPlus,imgSoalTotalChangedMinus]);
     
     // const str = ""
 
@@ -370,135 +777,21 @@ function AddForm(props) {
             <span>soal : </span>
             <br/>
             <div className={styles.editor}>
-            <textarea value={soal} onChange={soalType} name="" id="" cols="30" rows="10"></textarea>            
-                <Latex dangerouslySetInnerHTML={{__html: soal}}></Latex>
-                {/* <div className={styles.text}>
-                    <Latex>{'$' +
-                        charReplace(soal,
-                            [
-                                {
-                                    'before': String.fromCharCode(32),
-                                    'after': String.fromCharCode(92) + String.fromCharCode(32)
-                                },
-                                {
-                                    'before': String.fromCharCode(10),
-                                    'after':    String.fromCharCode(92) + String.fromCharCode(92)
-                                }
-                            ]
-                        )
-                             +
-                        '$'}</Latex>
-                </div> */}
-                {/* <Latex displayMode={true}>{soal}</Latex> */}
-                {/* <p>aslkhdkjasd <Latex>{String.raw`$\int_0^1 x^2\ dx$`}</Latex> asldjlaksd <Latex displayMode={true}>{String.raw`$\int_0^1 x^2\ dx$`}</Latex></p> */}
-                {/* <div dangerouslySetInnerHTML={{__html: soal}}></div> */}
-                {/* {ReactHtmlParser(soal)} */}
-                {/* {Latex.render("c = \\pm\\sqrt{a^2 + b^2}")} */}
-                {/* {soal}
+                <textarea value={soal} onChange={soalType} name="" id="soal" cols="30" rows="10"></textarea>  
+                <span>pilih Gambar </span>
+                {/* <button onClick={()=>cekarraygambar()}>-</button> */}
+                {/* <button onClick={()=>addImage("soal")}>+</button> */}
+                {/* <button onClick={()=>cekimgsoal()}>+</button> */}
+                <input type="file" onChange={onImageChange.bind(this, "soal")} className="filetype" />
+                <div className="img__group" id="img__group__soal">
+
+                </div>
                 <br/>
-                {soal.split("$").map(i => (
-                    <div>{i}</div>
-                ))}
-                <br />
-                <h1>subs</h1>
-                {soal.substring(
-                    soal.lastIndexOf(":") + 1, 
-                    soal.lastIndexOf(";")
-                )} */}
-                {/* <Latex>{ soal }</Latex> */}
-              
-                {soal.split(" ").map((item,index) => {
-                    
-                    // console.log(item);
-                    // console.log(/(@)(.+?)(@)/s.test(item));
-                    //     if (/(@)(.+?)(@)/s.test(item)) {
-                        
-                    //     const data = item.replaceAll(String.fromCharCode(32), '')
-                    //     .replaceAll(String.fromCharCode(13), '')
-                    //     .replaceAll("{}&",'');
-                    //         console.log("dataadnda : " + data);
-                            
-                    //     // console.log(/\@(.*?)\@/g.test(data))
-                    //         // console.log("data = ="+data);
-                    //     // let result = data.replaceAll(/\\si{(.*?)}{.*?}/g, '');
-                    //     // result = result.replaceAll(/\\SI|\\si|\\NUM|\\num/g, '');
-                    //     let results;
-                    //     results = data.replaceAll("@", "$$")
-                    //     const findSiunitX = data.match(/\\si{(.*?)}{.*?}/g);
-                    //     // console.log(a);
-                    //     // return (<Latex key={index} displayMode={true}>{data.replaceAll("@","$")}</Latex>)
-                    // //       console.log("data = "+data);
-                    // //       console.log("cond = "+/\\SI|\\si|\\NUM|\\num/g.test(data));
-                    // //     if (/\\SI|\\si|\\NUM|\\num/g.test(data)) {
-                    // //         const a = data.match(/(?<=\\si).*/g); 
-                    //     findSiunitX.map((item) => {
-                    //         const result = item.match(/(?<=\{)(.*?)(?=\})/g);
-                    //         const mode = item.match(/(?<=\[)(.*?)(?=\])/g);
-                    //         //         console.log(a);
-                            
-                        
-                    //         if (result.length > 1) {
-                    //             let param1;
-                    //             let param2;
-                    //             if (mode === null) {
-                    //                 param1 = replaceSiunitx("", result[0]);
-                    //                 param2 = replaceSiunitx("", result[1]);
-                    //             } else {
-                    //                 param1 = replaceSiunitx(mode[0], result[0]);
-                    //                 param2 = replaceSiunitx(mode[0], result[1]);
-                    //             }
-                    //             // console.log("result = " + param1 + param2);
-                    //             results = results.replace(/\\si{(.*?)}{.*?}/s, param1 + param2);
-                    //             // return (<Latex key={index}>{abc}</Latex>);
-                    //         } else {
-                    //             let param1;
-                    //             mode === null ? param1 = replaceSiunitx("", result[0]) : param1 = replaceSiunitx(mode[0], result[0]);
-                    //             // console.log("result param2 = "+param2);
-                    //             // return (<Latex key={index} >{param1}</Latex>);
-                    //         }
-                    //     });
-                    //         return (<Latex key={index}>{results}</Latex>);
-
-                            
-
-                    // }else{
-                    //     return (<Latex key={index} displayMode={true}>{data.replaceAll("@","$")}</Latex>)
-                    // }
-                        
-                    // }
-                    //  else if (/\$(.*?)\$/g.test(item)) {
-                    //     return (<Latex key={index}>{ item + " " }</Latex>)
-                    // }
-                    //  else if (/\\begin{align*}(.*?)\\end{align*}/g.test(item)) {
-                    //     return (<Latex key={index} displayMode={true}>{ item }</Latex>)
-                    // }
-                    // else if (/\\SI|\\si|\\NUM|\\num/g.test(item)) {
-                    //     const result = item.match(/(?<=\{)(.*?)(?=\})/g);
-                    //     const mode = item.match(/(?<=\[)(.*?)(?=\])/g);
-                        
-                    //     if (result.length > 1) {
-                    //         let param1;
-                    //         let param2;
-                    //         if (mode === null) {
-                    //             param1 = replaceSiunitx("",result[0]);
-                    //             param2 = replaceSiunitx("",result[1]);
-                    //         } else {
-                    //             param1 = replaceSiunitx(mode[0],result[0]);
-                    //             param2 = replaceSiunitx(mode[0],result[1]);
-                    //         }
-                    //         // console.log("result param2 = "+param2);
-                    //         return (<Latex key={index}>{param1 + " " + param2 + " "}</Latex>);
-                    //     } else {
-                    //         let param1;
-                    //         mode === null ? param1 = replaceSiunitx("", result[0]) : param1 = replaceSiunitx(mode[0], result[0]);
-                    //         return (<Latex key={index}>{param1}</Latex>);
-                    //     }
-
-                    // }
-                    // else{
-                    //     return (<span key={index}>{ item + " " }</span>);
-                    // }
-                // })}
+                
+                {/* <Latex dangerouslySetInnerHTML={{__html: soal}}></Latex> */}
+                {translationLatex(soal).split(" ").map((item) => {
+                    return translationLatexPreview("soal",item)
+                })}
             </div>
             <br />
             {tipeSoal === "essai" ?
@@ -507,32 +800,62 @@ function AddForm(props) {
                 <div className={styles.pilihan__ganda}>
                     <span>Pilihan A</span>
                      <div className={styles.editor}>
-                    <textarea value={pil_a} onChange={e => {setPil_a(e.target.value)}} cols="30" rows="10"></textarea>
-                    <Latex>{pil_a}</Latex>
+                    <textarea value={pil_a} onChange={e => {setPil_a(e.target.value)}} cols="30" rows="10" id="pil_a"></textarea>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "pil_a")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{pil_a}</Latex> */}
+                    {translationLatex(pil_a).split(" ").map((item) => {
+                        return translationLatexPreview("pil_a".item)
+                    })}
                     </div>
                     <br />
                     <span>Pilihan B</span>
                      <div className={styles.editor}>
-                    <textarea value={pil_b} onChange={e => {setPil_b(e.target.value)}} cols="30" rows="10"></textarea>
-                    <Latex>{pil_b}</Latex>
+                    <textarea value={pil_b} onChange={e => {setPil_b(e.target.value)}} cols="30" rows="10" id="pil_b"></textarea>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "pil_b")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{pil_b}</Latex> */}
+                    {translationLatex(pil_b).split(" ").map((item) => {
+                        return translationLatexPreview("pil_b",item)
+                    })}
                     </div>
                     <br />
                     <span>Pilihan C</span>
                      <div className={styles.editor}>
-                    <textarea value={pil_c} onChange={e => {setPil_c(e.target.value)}} cols="30" rows="10"></textarea>
-                    <Latex>{pil_c}</Latex>
+                    <textarea value={pil_c} onChange={e => {setPil_c(e.target.value)}} cols="30" rows="10" id="pil_c"></textarea>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "pil_c")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{pil_c}</Latex> */}
+                    {translationLatex(pil_c).split(" ").map((item) => {
+                        return translationLatexPreview("pil_c",item)
+                    })}
                     </div>
                     <br />
                     <span>Pilihan D</span>
                     <div className={styles.editor}>
-                    <textarea value={pil_d} onChange={e => {setPil_d(e.target.value)}} cols="30" rows="10"></textarea>
-                    <Latex>{pil_d}</Latex>
+                    <textarea value={pil_d} onChange={e => {setPil_d(e.target.value)}} cols="30" rows="10" id="pil_d"></textarea>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "pil_d")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{pil_d}</Latex> */}
+                    {translationLatex(pil_d).split(" ").map((item) => {
+                        return translationLatexPreview("pil_d",item)
+                    })}
                     </div>
                     <br />
                     <span>Pilihan E</span>
                     <div className={styles.editor}>
-                    <textarea value={pil_e} onChange={e => {setPil_e(e.target.value)}} cols="30" rows="10"></textarea>
-                    <Latex>{pil_e}</Latex>
+                    <textarea value={pil_e} onChange={e => {setPil_e(e.target.value)}} cols="30" rows="10" id="pil_e"></textarea>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "pil_e")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{pil_e}</Latex> */}
+                    {translationLatex(pil_e).split(" ").map((item) => {
+                        return translationLatexPreview("pil_e",item)
+                    })}
                     </div>
                     <br/>
                 </div>
@@ -541,13 +864,19 @@ function AddForm(props) {
             <br />
             {tipeSoal === "essai" ?
             <div className={styles.editor}>
-                <textarea value={jawaban} onChange={jawabanType} name="" id="" cols="30" rows="10"></textarea>
-                    <Latex>{jawaban}
+                    <textarea value={jawaban} onChange={jawabanType} id="jawaban" cols="30" rows="10"></textarea>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "jawaban")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{jawaban} */}
                     {/* <Latex displayMode={true}>$\pi$</Latex> */}
-                    </Latex>
+                    {/* </Latex> */}
                     {/* {ReactHtmlParser(jawaban)} */}
                     {/* {jawaban} */}
                     {/* <div dangerouslySetInnerHTML={{__html: jawaban}}></div> */}
+                    {translationLatex(jawaban).split(" ").map((item) => {
+                    return translationLatexPreview("jawaban",item)
+                    })}
             </div>
                 :
             <div className={styles.jwb_pilgan}>
@@ -565,8 +894,14 @@ function AddForm(props) {
             <span>pembahasan : </span>
             <br/>
             <div className={styles.editor}>
-            <textarea value={pembahasan} onChange={pembahasanType} name="" id="" cols="30" rows="10"></textarea>
-            <Latex>{pembahasan}</Latex>
+                <textarea value={pembahasan} onChange={pembahasanType} name="" id="pembahasan" cols="30" rows="10"></textarea>
+                <span>Pilih Gambar </span>
+                <input type="file" onChange={onImageChange.bind(this, "pembahasan")} className="filetype" />
+                <br/>
+                {/* <Latex>{pembahasan}</Latex> */}
+                {translationLatex(pembahasan).split(" ").map((item) => {
+                    return translationLatexPreview("pembahasan",item)
+                })}
             </div>
             <br />
             
