@@ -231,23 +231,23 @@ function AddForm(props) {
         
     }
 
-    const translationLatexPreview = (input,item) => {
+    const translationLatexPreview = (input,item,index) => {
        if (/\$(.*?)\$/s.test(item)) {
-            return (<Latex>{item+" "}</Latex>);
+            return (<Latex key={index.toString()}>{item+" "}</Latex>);
         } else if (/@(.*?)@/s.test(item)) {
-            return (<Latex displayMode={true}>{item.replaceAll("@","$$")+" "}</Latex>);
+            return (<Latex key={index.toString()} displayMode={true}>{item.replaceAll("@","$$")+" "}</Latex>);
         } else if (/img\d+/s.test(item)) {
            const numberImages = item.match(/(?<=img)\d+/s);
         //    console.log("numberImages[0] = " + numberImages[0]);
         //    console.log("imgSoal[numberImages[0] = " + imgSoal[numberImages[0]]);
            return (
-               <div className="img__group" id="img__group__soal">
+               <div key={index.toString()} className="img__group" id="img__group__soal">
                    <img src={imgSoal[numberImages[0]]} alt="aad" />
                    <button style={{ position: "absolute",right: "10px",width: "40px",height: "30px",cursor: "pointer"}} onClick={() => removeImage(input, numberImages[0])}>X</button>
                </div>
            );
         } else { 
-            return (<span>{item+" "}</span>);
+            return (<span key={index.toString()}>{item+" "}</span>);
         }
     }
 
@@ -435,7 +435,7 @@ function AddForm(props) {
             } else if(str !== item.code && CodeMatch === false){
                 if (/-?\d+(?=e).-?\d+/s.test(str) || /(?=e).-?\d+/s.test(str)) {
                     const pangkat = str.match(/(?<=e).?\d+/s);
-                    const nominal = str.match(/-?\d+(?=e)/s);
+                    const nominal = str.match(/-?\d+(?=e)|-?\d+\,\d+(?=e)/s);
                     if (pangkat !== null && nominal !== null) {
                         result = nominal[0] + " x 10^{" + pangkat[0]+"}";
                     } else if (pangkat !== null && nominal === null) {
@@ -789,8 +789,8 @@ function AddForm(props) {
                 <br/>
                 
                 {/* <Latex dangerouslySetInnerHTML={{__html: soal}}></Latex> */}
-                {translationLatex(soal).split(" ").map((item) => {
-                    return translationLatexPreview("soal",item)
+                {translationLatex(soal).split(" ").map((item,index) => {
+                    return translationLatexPreview("soal",item,index)
                 })}
             </div>
             <br />
@@ -805,8 +805,8 @@ function AddForm(props) {
                     <input type="file" onChange={onImageChange.bind(this, "pil_a")} className="filetype" />
                     <br/>
                     {/* <Latex>{pil_a}</Latex> */}
-                    {translationLatex(pil_a).split(" ").map((item) => {
-                        return translationLatexPreview("pil_a".item)
+                    {translationLatex(pil_a).split(" ").map((item,index) => {
+                        return translationLatexPreview("pil_a",item,index)
                     })}
                     </div>
                     <br />
@@ -817,8 +817,8 @@ function AddForm(props) {
                     <input type="file" onChange={onImageChange.bind(this, "pil_b")} className="filetype" />
                     <br/>
                     {/* <Latex>{pil_b}</Latex> */}
-                    {translationLatex(pil_b).split(" ").map((item) => {
-                        return translationLatexPreview("pil_b",item)
+                    {translationLatex(pil_b).split(" ").map((item,index) => {
+                        return translationLatexPreview("pil_b",item,index)
                     })}
                     </div>
                     <br />
@@ -829,8 +829,8 @@ function AddForm(props) {
                     <input type="file" onChange={onImageChange.bind(this, "pil_c")} className="filetype" />
                     <br/>
                     {/* <Latex>{pil_c}</Latex> */}
-                    {translationLatex(pil_c).split(" ").map((item) => {
-                        return translationLatexPreview("pil_c",item)
+                    {translationLatex(pil_c).split(" ").map((item,index) => {
+                        return translationLatexPreview("pil_c",item,index)
                     })}
                     </div>
                     <br />
@@ -841,8 +841,8 @@ function AddForm(props) {
                     <input type="file" onChange={onImageChange.bind(this, "pil_d")} className="filetype" />
                     <br/>
                     {/* <Latex>{pil_d}</Latex> */}
-                    {translationLatex(pil_d).split(" ").map((item) => {
-                        return translationLatexPreview("pil_d",item)
+                    {translationLatex(pil_d).split(" ").map((item,index) => {
+                        return translationLatexPreview("pil_d",item,index)
                     })}
                     </div>
                     <br />
@@ -853,8 +853,8 @@ function AddForm(props) {
                     <input type="file" onChange={onImageChange.bind(this, "pil_e")} className="filetype" />
                     <br/>
                     {/* <Latex>{pil_e}</Latex> */}
-                    {translationLatex(pil_e).split(" ").map((item) => {
-                        return translationLatexPreview("pil_e",item)
+                    {translationLatex(pil_e).split(" ").map((item,index) => {
+                        return translationLatexPreview("pil_e",item,index)
                     })}
                     </div>
                     <br/>
@@ -874,8 +874,8 @@ function AddForm(props) {
                     {/* {ReactHtmlParser(jawaban)} */}
                     {/* {jawaban} */}
                     {/* <div dangerouslySetInnerHTML={{__html: jawaban}}></div> */}
-                    {translationLatex(jawaban).split(" ").map((item) => {
-                    return translationLatexPreview("jawaban",item)
+                    {translationLatex(jawaban).split(" ").map((item,index) => {
+                    return translationLatexPreview("jawaban",item,index)
                     })}
             </div>
                 :
@@ -899,8 +899,8 @@ function AddForm(props) {
                 <input type="file" onChange={onImageChange.bind(this, "pembahasan")} className="filetype" />
                 <br/>
                 {/* <Latex>{pembahasan}</Latex> */}
-                {translationLatex(pembahasan).split(" ").map((item) => {
-                    return translationLatexPreview("pembahasan",item)
+                {translationLatex(pembahasan).split(" ").map((item,index) => {
+                    return translationLatexPreview("pembahasan",item,index)
                 })}
             </div>
             <br />
