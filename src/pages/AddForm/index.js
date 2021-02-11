@@ -34,8 +34,10 @@ function AddForm(props) {
     const [soal, setSoal] = useState("");
     const [imgSoal, setImgSoal] = useState([]);
     const [imgSoalFile, setImgSoalFile] = useState([]);
-    const [imgSoalTotal, setImgSoalTotal] = useState(0);
+    const [imgSoalName, setImgSoalName] = useState([]);
+    // const [imgSoalNa, setImgSoalNa] = useState(0);
     const [soalCache, setSoalCache] = useState("");
+    const [latestId, setLatestId] = useState("");
     const [soalConverted, setSoalConverted] = useState("");
     const [jawaban, setJawaban] = useState("");
     const [pembahasan, setPembahasan] = useState("");
@@ -48,9 +50,12 @@ function AddForm(props) {
     const [popUpTitle, setPopUpTitle] = useState("");
     const [inputDeskripsi, setInputDeskripsi] = useState("");
     const [addDeskripsiClicked, setAddDeskripsiClicked] = useState(false);
+    const [addDataClicked, setAddDataClicked] = useState(false);
     const [onImageChangeClicked, setOnImageChangeClicked] = useState(false);
     const [imgSoalTotalChangedPlus, setOnIimgSoalTotalChangedPlus] = useState(false);
     const [imgSoalTotalChangedMinus, setOnIimgSoalTotalChangedMinus] = useState(false);
+
+    const base_url = "http://localhost/app_bimbel_api";
 
     const onImageChangeActivated = () => {
         console.log("ture");
@@ -66,7 +71,6 @@ function AddForm(props) {
         console.log("cek index2 "+imgSoal[2]);
         imgSoal.map((item, index) => {
             console.log("index = "+index);
-            // console.log(item);
         })
     }
     
@@ -81,19 +85,14 @@ function AddForm(props) {
             reader.readAsDataURL(files[0]);
             reader.onload = e => {
                 setImgSoal(imgSoal => imgSoal.concat(e.target.result));
-                setImgSoalTotal(imgSoalTotal => imgSoalTotal + 1);
-                // console.log("sebelum "+imgSoalTotal);
-                // setOnIimgSoalTotalChangedPlus(true);
-                // console.log("sedudah "+imgSoalTotal);
-                //  console.log("target = " + e.target.result);
-                //  console.log("id = "+id);
-                // console.log("imgsoal[id] = "+imgSoal[1]);
+                // setImgSoalTotal(imgSoalTotal => imgSoalTotal + 1);
             };
             var curPos =  
         document.getElementById(input).selectionStart; 
-        // console.log("length = "+imgSoal.length); 
         let x;
-        let text_to_insert = " img"+(imgSoal.length)+" ";
+        let text_to_insert = " img" + (imgSoal.length) + " ";
+        setImgSoalName(imgSoalName => imgSoalName.concat("img" + (imgSoal.length)));
+            
         switch (input) {
             case "soal":
                 x = soal; 
@@ -139,57 +138,12 @@ function AddForm(props) {
                     
     }
                 
-    // const addImage = (inputType) => {
-    //     const div = document.createElement('div');
-    //     const input = document.createElement('input');
-    //     const button = document.createElement('button');
-    //     setimgSoalTotal(imgSoalTotal => imgSoalTotal + 1);
-    //     // console.log(imgSoalTotal);
-    //     div.class = "img__button";
-    //     input.type = "file";
-    //     input.onchange = onImageChange.bind(this, "soal");;
-    //     button.textContent = "-"+ imgSoalTotal;
-    //     button.onclick = () => removeImage("soal",imgSoalTotal);
-    //     // console.log(inputType);
-    //     // console.log(input);
-    //     // aa
-    //     document.getElementById('img__group__soal').appendChild(div);
-    //     div.appendChild(input);
-    //     div.appendChild(button);
-    // }
 
     const removeImageActivated = () => {
          setOnImageChangeClicked(true);
     }
     
     const removeImage = (input,id) => {
-        // var list = document.getElementById("img__group__soal");   // Get the <ul> element with id="myList"
-        // var idButton = document.getElementById("img__button" + id);   // Get the <ul> element with id="myList"
-        // console.log("list.length");
-        // console.log(list.childNodes[0]);
-        // console.log(list);
-        
-        // console.log("id = "+id);
-        // // console.log(list.childNodes[id]);
-        // // console.log(imgSoal);
-        // // console.log(imgSoal[0]);
-        // console.log("imgsoal[id] = " + imgSoal[id]);
-        
-        // if (typeof imgSoal[id] !== 'undefined') {
-        //     setImgSoal(imgSoal => imgSoal.splice(id, 1));
-        // } else {
-        //     console.log("null imgsoal");
-        //     return 0;
-        // }
-       
-        // list.removeChild(list.childNodes[id]);  
-        // console.log("sebelum "+imgSoalTotal);
-        // setOnIimgSoalTotalChangedMinus(true)
-        // console.log("sedudah "+imgSoalTotal);
-        
-        // document.getElementById("#soal").value = "";
-
-        // if()
         let imgRemove;
         switch (input) {
             case "soal":
@@ -243,7 +197,7 @@ function AddForm(props) {
            return (
                <div key={index.toString()} className="img__group" id="img__group__soal">
                    <img src={imgSoal[numberImages[0]]} alt="aad" />
-                   <button style={{ position: "absolute",right: "10px",width: "40px",height: "30px",cursor: "pointer"}} onClick={() => removeImage(input, numberImages[0])}>X</button>
+                   {/* <button style={{ position: "absolute",right: "10px",width: "40px",height: "30px",cursor: "pointer"}} onClick={() => removeImage(input, numberImages[0])}>X</button> */}
                </div>
            );
         } else { 
@@ -286,8 +240,23 @@ function AddForm(props) {
         // console.log("sesudah imgsoal =");
         // console.log(imgSoal);
           const data = new FormData() 
-        data.append('file', imgSoalFile)
-        console.warn(imgSoalFile);
+        
+        data.append('nameimg', imgSoalName)
+        imgSoalFile.map((item, index) => {
+            console.log(index);
+            data.append('file'+index, item)
+        });
+        console.log(data);
+        // axios.post(url, data, { // receive two parameter endpoint url ,form data 
+        // })
+            axios.post('/gambar_soal',data)
+                .then(function (response) {
+                    // console.log(response.data);
+                    console.log(response);
+                });
+        // .then(res => { // then print response status
+        //     console.warn(res);
+        // })
         // let url = "http://localhost:8000/upload.php";
 
         // axios.post(url, data, { // receive two parameter endpoint url ,form data 
@@ -323,7 +292,7 @@ function AddForm(props) {
             /\\SI{.*?}{.*?}|\\SI\[.*?]{.*?}{.*?}|\\SI{.*?}|\\NUM{.*?}/gi
         const siunitX1 = result.match(siunitXCondition);
         
-        console.log("siunitX1");
+        // console.log("siunitX1");
         // console.log(imgGroup);
         // console.log(imgSoal);
        
@@ -570,10 +539,16 @@ function AddForm(props) {
                 id_bab_soal: selectbabSoal
             }
         }
-        axios.post('/bank_soal',data)
+        
+         axios.post('/bank_soal',data)
                 .then(function (response) {
                     // console.log(response.data);
+                    setAddDataClicked(true);
                 });
+        
+        
+       
+        
     }
     
     const addDeskripsi = () => {
@@ -621,6 +596,47 @@ function AddForm(props) {
 
     useEffect(() => {
         
+        async function saveImages() { 
+            axios.get('/bank_soal?last="1"')
+                .then(function (response) {
+                    // setLatestId(response.data[0]["id"]);
+                    const dataform = new FormData() 
+        
+                    dataform.append('nameimg', imgSoalName)
+                    // console.log("asd" + response.data[0]["id"])
+                    dataform.append('id', response.data[0]["id"])
+                    imgSoalFile.map((item, index) => {
+                        dataform.append('file'+index, item)
+                    });
+       
+                    axios.post('/gambar_soal',dataform)
+                        .then(function (response) {
+                            console.log(response);
+                    });
+                });
+        }
+        // async function postImg() { 
+           
+        
+        //  const dataform = new FormData() 
+        
+        //     dataform.append('nameimg', imgSoalName)
+        //     console.log("asd" + latestId)
+        // dataform.append('id', latestId)
+        // imgSoalFile.map((item, index) => {
+        //     // console.log(index);
+        //     dataform.append('file'+index, item)
+        // });
+        // // console.log(data);
+        // // axios.post(url, data, { // receive two parameter endpoint url ,form data 
+        // // })
+        //     axios.post('/gambar_soal',dataform)
+        //         .then(function (response) {
+        //             // console.log(response.data);
+        //             console.log(response);
+        //         });
+        // }
+        
         async function fetchdata() {
             
             axios.get('/mapel')
@@ -649,6 +665,11 @@ function AddForm(props) {
             fetchdata();
             setAddDeskripsiClicked(false);
         }
+        if (addDataClicked) {
+            saveImages();
+            // postImg();
+            setAddDataClicked(false);
+        }
         if (setOnImageChangeClicked) {
             // setImgSoal(imgSoal => imgSoal.concat("e.target.result"));
             
@@ -673,7 +694,7 @@ function AddForm(props) {
         //     setImgSoal(imgSoal => imgSoal.concat("e.target.result"));
         //     console.log(imgSoal);
         // }
-    }, [selectMapel, addDeskripsiClicked, soalConverted,soal,onImageChangeClicked,imgSoalTotalChangedPlus,imgSoalTotalChangedMinus]);
+    }, [selectMapel,addDataClicked, addDeskripsiClicked, soalConverted,soal,onImageChangeClicked,imgSoalTotalChangedPlus,imgSoalTotalChangedMinus]);
     
     // const str = ""
 
@@ -730,7 +751,7 @@ function AddForm(props) {
             <span>mata pelajaran </span>
             <select value={selectMapel} onChange={selectMapelChanged}>   
             <option value="" disabled ></option>
-            <input type="text" name="" id=""/>
+            {/* <input type="text" name="" id=""/> */}
                 {mapel.map(item => (
                    <option key={item.id} value={item.id}>{item.deskripsi}</option>
                 ))}
@@ -777,9 +798,9 @@ function AddForm(props) {
             <span>soal : </span>
             <br/>
             <div className={styles.editor}>
-                <textarea value={soal} onChange={soalType} name="" id="soal" cols="30" rows="10"></textarea>  
+                <textarea value={soal} onChange={soalType} name="soal" id="soal" cols="30" rows="10"></textarea>  
                 <span>pilih Gambar </span>
-                {/* <button onClick={()=>cekarraygambar()}>-</button> */}
+                <button onClick={()=>cekarraygambar()}>-</button>
                 {/* <button onClick={()=>addImage("soal")}>+</button> */}
                 {/* <button onClick={()=>cekimgsoal()}>+</button> */}
                 <input type="file" onChange={onImageChange.bind(this, "soal")} className="filetype" />
@@ -811,7 +832,7 @@ function AddForm(props) {
                     </div>
                     <br />
                     <span>Pilihan B</span>
-                     <div className={styles.editor}>
+                    <div className={styles.editor}>
                     <textarea value={pil_b} onChange={e => {setPil_b(e.target.value)}} cols="30" rows="10" id="pil_b"></textarea>
                     <span>Pilih Gambar </span>
                     <input type="file" onChange={onImageChange.bind(this, "pil_b")} className="filetype" />
@@ -905,7 +926,7 @@ function AddForm(props) {
             </div>
             <br />
             
-            <Button title="Submit" link="/" onClick={addData} />
+            <Button title="Submit" onClick={addData} />
         </div>
     )
 }

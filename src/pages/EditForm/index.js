@@ -4,6 +4,7 @@ import styles from './styles.module.css'
 import axios from '../../axios'
 import ReactHtmlParser from 'react-html-parser';
 import { useParams } from "react-router-dom";
+import SiunitX from '../../JSON/Siunitx'
 // import CKEditor from 'ckeditor4-react';
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -25,6 +26,10 @@ function EditForm(props) {
     const [selectTingkatKesulitan, setSelectTingkatKesulitan] = useState("");
     const [tipeSoal, setTipeSoal] = useState("essai");
     const [soal, setSoal] = useState("");
+    const [imgSoal, setImgSoal] = useState([]);
+    const [imgSoalFile, setImgSoalFile] = useState([]);
+    const [imgSoalName, setImgSoalName] = useState([]);
+    const [imgSoalTotal, setImgSoalTotal] = useState(0);
     const [jawaban, setJawaban] = useState("");
     const [pembahasan, setPembahasan] = useState("");
     const [pil_a, setPil_a] = useState("");
@@ -32,7 +37,288 @@ function EditForm(props) {
     const [pil_c, setPil_c] = useState("");
     const [pil_d, setPil_d] = useState("");
     const [pil_e, setPil_e] = useState("");
+    const [onImageChangeClicked, setOnImageChangeClicked] = useState(false);
+    const [addDataClicked, setAddDataClicked] = useState(false);
+    const [link, setLink] = useState([]);
     let { id } = useParams();
+
+    const onImageChange = (input, event) => {
+        setOnImageChangeClicked(true);
+        let files = event.target.files;
+        setImgSoalFile(imgSoal => imgSoal.concat(files[0]));
+        
+        if (FileReader && files && files.length) {
+            let reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = e => {
+                setImgSoal(imgSoal => imgSoal.concat(e.target.result));
+                setImgSoalTotal(imgSoalTotal => imgSoalTotal + 1);
+            };
+            var curPos =  
+        document.getElementById(input).selectionStart; 
+        let x;
+        let text_to_insert = " img"+(imgSoal.length)+" ";
+        switch (input) {
+            case "soal":
+                x = soal; 
+                setSoal(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+            case "jawaban":
+                x = jawaban; 
+                setJawaban(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+                case "pembahasan":
+                x = pembahasan; 
+                setPembahasan(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+            case "pil_a":
+                x = pil_a; 
+                setPil_a(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+                case "pil_b":
+                    x = pil_b; 
+                    setPil_b(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+            case "pil_c":
+                x = pil_c; 
+                setPil_c(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+            case "pil_d":
+                x = pil_d; 
+                setPil_d(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                break;
+                case "pil_e":
+                    x = pil_e; 
+                    setPil_e(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+                    break;
+        
+                    default:
+                        break;
+                    }
+        }
+                    
+    }
+
+    const removeImage = (input,id) => {
+        let imgRemove;
+        switch (input) {
+            case "soal":
+                 imgRemove = soal.replace(" img" + id + " ", "");
+                 setSoal(imgRemove);
+                break;
+            case "jawaban":
+                 imgRemove = jawaban.replace(" img" + id + " ", "");
+                 setJawaban(imgRemove);
+                break;
+            case "pembahasan":
+                imgRemove = pembahasan.replace(" img" + id + " ", "");
+                 setPembahasan(imgRemove);
+                break;
+            case "pil_a":
+                imgRemove = pil_a.replace(" img" + id + " ", "");
+                 setPil_a(imgRemove);
+                break;
+                case "pil_b":
+                    imgRemove = pil_b.replace(" img" + id + " ", "");
+                 setPil_b(imgRemove);
+                break;
+            case "pil_c":
+                imgRemove = pil_c.replace(" img" + id + " ", "");
+                 setPil_c(imgRemove);
+                break;
+            case "pil_d":
+                imgRemove = pil_d.replace(" img" + id + " ", "");
+                 setPil_d(imgRemove);
+                break;
+            case "pil_e":
+                    imgRemove = pil_e.replace(" img" + id + " ", "");
+                 setPil_e(imgRemove);
+                    break;
+        
+            default:
+                    break;
+            }
+        
+    }
+     const replaceAllCurlyBraces = (sentences) => {
+        const temp = sentences.replaceAll("{","").replaceAll("}","");
+    
+        return temp;
+        
+    }
+
+    const translationLatexPreview = (input,item,index) => {
+       if (/\$(.*?)\$/s.test(item)) {
+            return (<Latex key={index.toString()}>{item+" "}</Latex>);
+        } else if (/@(.*?)@/s.test(item)) {
+            return (<Latex key={index.toString()} displayMode={true}>{item.replaceAll("@","$$")+" "}</Latex>);
+        } else if (/img\d+/s.test(item)) {
+           const numberImages = item.match(/(?<=img)\d+/s);
+        //    console.log("numberImages[0] = " + numberImages[0]);
+        //    console.log("imgSoal[numberImages[0] = " + imgSoal[numberImages[0]]);
+           return (
+               <div key={index.toString()} className="img__group" id="img__group__soal">
+                   <img src={imgSoal[numberImages[0]]} alt="aad" />
+                   <button style={{ position: "absolute",right: "10px",width: "40px",height: "30px",cursor: "pointer"}} onClick={() => removeImage(input, numberImages[0])}>X</button>
+               </div>
+           );
+        } else { 
+            return (<span key={index.toString()}>{item+" "}</span>);
+        }
+    }
+
+    const translationLatex = (input) => {
+        
+        if (typeof input !== 'undefined') {
+            let result = input
+                .replaceAll("\\begin{align*}", String.fromCharCode(32) + "@\\begin{aligned}")
+                .replaceAll("\\end{align*}", "\\end{aligned}@" + String.fromCharCode(32))
+                .replaceAll("\\begin{equation*}", String.fromCharCode(32) + "@\\begin{aligned}")
+                .replaceAll("\\end{equation*}", "\\end{aligned}@" + String.fromCharCode(32));
+        
+            const angFunction = result.match(/\\ang{.*?}/g);
+            if (angFunction !== null) {
+                angFunction.map((item) => {
+                    const param = item.match(/{.*?}/g);
+                    const covertItem = replaceAllCurlyBraces(param[0]) + "\\degree";
+                    result = result.replace(item, covertItem);
+                })
+        }
+        const inlineEquation = result.match(/\$(.*?)\$/g);
+        const blockEquation = result.match(/(@)(.+?)(@)/gs);
+        const siunitXCondition =
+            /\\SI{.*?}{.*?}|\\SI\[.*?]{.*?}{.*?}|\\SI{.*?}|\\NUM{.*?}/gi
+        const siunitX1 = result.match(siunitXCondition);
+        
+        console.log("siunitX1");
+        // console.log(imgGroup);
+        // console.log(imgSoal);
+       
+          
+        if (inlineEquation !== null) {
+            inlineEquation.map((item) => {
+            const covertItem = item.replaceAll(String.fromCharCode(32), '\\,');
+            // console.log(covertItem);
+
+            result = result.replace(item, covertItem);
+        })
+        }
+        if (blockEquation !== null) {
+            blockEquation.map((item) => {
+                const covertItem = item
+                .replaceAll(String.fromCharCode(32)+"\\"+String.fromCharCode(32), "\\,")
+                    .replaceAll(String.fromCharCode(32), '\\,')
+                    .replaceAll(String.fromCharCode(13), '')
+                    .replaceAll(String.fromCharCode(9), '')
+                    .replaceAll("{}&","")
+                    .replaceAll("$","")
+                    .replaceAll("=","&=")
+                    .replaceAll("\\approx","&\\approx")
+                    .replaceAll("[per-mode&=symbol]","[per-mode=symbol]")
+                    // .replaceAll("=","&=")
+            
+            result = result.replace(item, covertItem);
+            })
+        }
+
+        if (siunitX1 !== null) {
+            siunitX1.map((item) => {
+                let convertResult = "";
+                let itemProseced;
+                let paramItemProseced;
+                let par;
+                let tothe;
+                if (/tothe/s.test(item)) {
+                    itemProseced = item+"}";
+                } else {
+                    itemProseced = item;
+                }
+                // console.log("siunitX1");
+                // console.log(itemProseced);
+                
+                const mode = itemProseced.match(/\[.*?]/s);
+                const param = itemProseced.match(/{.*?}/g);
+                // console.log("mode = " + mode);
+                // console.log("param = " + param);
+                if (mode !== null) {
+                    param.map((paramItem) => {
+                        if (/tothe/s.test(paramItem)) {
+                            paramItemProseced = paramItem + "}";
+                        } else {
+                            paramItemProseced = paramItem;
+                        }
+                        par = replaceAllCurlyBraces(paramItemProseced);
+                        // console.log("if not null mode = " + mode[0]);
+                        convertResult += replaceSiunitx(mode[0], par) + " ";
+                    })   
+                } else {
+                    param.map((paramItem) => {
+                         if (/tothe/s.test(paramItem)) {
+                             paramItemProseced = paramItem + "}";
+                             const findTothe = paramItemProseced.match(/(?<=tothe).*/s);
+                             tothe = "^{"+replaceAllCurlyBraces(findTothe[0])+"}";
+                             paramItemProseced = paramItemProseced.replaceAll(/(?<=tothe).*/g, "");
+                            //  console.log("paramItemProseced = "+paramItemProseced)
+                            //  console.log("tothe = "+tothe)
+                        } else {
+                             paramItemProseced = paramItem;
+                             tothe= "";
+                        }
+                        par = replaceAllCurlyBraces(paramItemProseced);
+                        convertResult += replaceSiunitx("", par)+tothe+ " ";
+                    })   
+                }
+                convertResult = convertResult.replaceAll(String.fromCharCode(32), '\\,');
+                result = result.replace(itemProseced, convertResult);
+                // console.log("convertResult = " + convertResult);
+            })
+        }
+
+        // console.log("ini hasil resyo = "+result);
+        // setSoalConverted(result);
+        // setSoalCache(soal);
+            return result;
+        } else {
+            return input;
+            // console.log("nothing change")
+        }
+        
+        
+    }
+   
+
+    const replaceSiunitx = (mode , str) => {
+        let result;
+        let CodeMatch = false;
+        
+        SiunitX.map((item) => {
+            // console.log("mode replaceunix= " + mode);
+            if (str === item.code && mode === "" && CodeMatch === false) {
+                result =  item.translation;
+                CodeMatch = true;
+            } else if (str === item.code && mode === "[per-mode=symbol]" && CodeMatch === false) { 
+                result = item["per-mode=symbol"];
+                CodeMatch = true;
+            } else if(str !== item.code && CodeMatch === false){
+                if (/-?\d+(?=e).-?\d+/s.test(str) || /(?=e).-?\d+/s.test(str)) {
+                    const pangkat = str.match(/(?<=e).?\d+/s);
+                    const nominal = str.match(/-?\d+(?=e)|-?\d+\,\d+(?=e)/s);
+                    if (pangkat !== null && nominal !== null) {
+                        result = nominal[0] + " x 10^{" + pangkat[0]+"}";
+                    } else if (pangkat !== null && nominal === null) {
+                        result = "10^" + pangkat[0];
+                    }else {
+                        result = str;
+                    }
+                } else {
+                    result = str;     
+                }
+                    // result = str;     
+            }
+        })
+        // console.log(result);
+        return result;
+    }
 
 
     const selectMapelChanged = (e) => {
@@ -81,6 +367,7 @@ function EditForm(props) {
     }
     
     const addData = (e) => {
+        setAddDataClicked(true);
         let data;
         if (tipeSoal === "essai") {
             data = {
@@ -120,6 +407,27 @@ function EditForm(props) {
     }
 
     useEffect(() => {
+
+        async function saveImages() { 
+            axios.get('/bank_soal?last="1"')
+                .then(function (response) {
+                    // setLatestId(response.data[0]["id"]);
+                    const dataform = new FormData() 
+        
+                    dataform.append('nameimg', imgSoalName)
+                    // console.log("asd" + response.data[0]["id"])
+                    dataform.append('id', response.data[0]["id"])
+                    imgSoalFile.map((item, index) => {
+                        dataform.append('file'+index, item)
+                    });
+
+                    axios.put('/gambar_soal',dataform)
+                        .then(function (response) {
+                            console.log(response);
+                    });
+                });
+        }
+
         async function fetchdata() {
             
             axios.get('/bank_soal?id=' + id)
@@ -195,7 +503,12 @@ function EditForm(props) {
         //             setBabSoal(response.data);
         //     });
         // }
-    }, []);
+         if (addDataClicked) {
+            saveImages();
+            // postImg();
+            setAddDataClicked(false);
+        }
+    }, [addDataClicked]);
 
     return (
         <div className={styles.container}>
@@ -290,8 +603,16 @@ function EditForm(props) {
             <br/>
             <div className={styles.editor}>
             <textarea value={soal} onChange={soalType} name="" id="" cols="30" rows="10"></textarea>            
-                <Latex>{soal}</Latex>
+                {/* <Latex>{soal}</Latex> */}
                 {/* {ReactHtmlParser(soal)} */}
+                <input type="file" onChange={onImageChange.bind(this, "soal")} className="filetype" />
+                <div className="img__group" id="img__group__soal">
+
+                </div>
+                <br />
+                {translationLatex(soal).split(" ").map((item,index) => {
+                    return translationLatexPreview("soal",item,index)
+                })}
             </div>
             <br />
             {tipeSoal === "essai" ?
@@ -301,31 +622,61 @@ function EditForm(props) {
                      <span>Pilihan A</span>
                      <div className={styles.editor}>
                     <textarea value={pil_a} onChange={e => {setPil_a(e.target.value)}} cols="30" rows="10"></textarea>
-                    <Latex>{pil_a}</Latex>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "pil_a")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{pil_a}</Latex> */}
+                    {translationLatex(pil_a).split(" ").map((item,index) => {
+                        return translationLatexPreview("pil_a",item,index)
+                    })}
                     </div>
                     <br />
                     <span>Pilihan B</span>
                      <div className={styles.editor}>
                     <textarea value={pil_b} onChange={e => {setPil_b(e.target.value)}} cols="30" rows="10"></textarea>
-                    <Latex>{pil_b}</Latex>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "pil_b")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{pil_b}</Latex> */}
+                    {translationLatex(pil_b).split(" ").map((item,index) => {
+                        return translationLatexPreview("pil_b",item,index)
+                    })}
                     </div>
                     <br />
                     <span>Pilihan C</span>
                      <div className={styles.editor}>
                     <textarea value={pil_c} onChange={e => {setPil_c(e.target.value)}} cols="30" rows="10"></textarea>
-                    <Latex>{pil_c}</Latex>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "pil_c")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{pil_c}</Latex> */}
+                    {translationLatex(pil_c).split(" ").map((item,index) => {
+                        return translationLatexPreview("pil_c",item,index)
+                    })}
                     </div>
                     <br />
                     <span>Pilihan D</span>
                     <div className={styles.editor}>
                     <textarea value={pil_d} onChange={e => {setPil_d(e.target.value)}} cols="30" rows="10"></textarea>
-                    <Latex>{pil_d}</Latex>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "pil_d")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{pil_d}</Latex> */}
+                    {translationLatex(pil_d).split(" ").map((item,index) => {
+                        return translationLatexPreview("pil_d",item,index)
+                    })}
                     </div>
                     <br />
                     <span>Pilihan E</span>
                     <div className={styles.editor}>
                     <textarea value={pil_e} onChange={e => {setPil_e(e.target.value)}} cols="30" rows="10"></textarea>
-                    <Latex>{pil_e}</Latex>
+                    <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "pil_e")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{pil_e}</Latex> */}
+                    {translationLatex(pil_e).split(" ").map((item,index) => {
+                        return translationLatexPreview("pil_e",item,index)
+                    })}
                     </div>
                     <br/>
                 </div>
@@ -335,7 +686,18 @@ function EditForm(props) {
             {tipeSoal === "essai" ?
             <div className={styles.editor}>
                 <textarea value={jawaban} onChange={jawabanType} name="" id="" cols="30" rows="10"></textarea>
-                <Latex>{jawaban}</Latex>
+                <span>Pilih Gambar </span>
+                    <input type="file" onChange={onImageChange.bind(this, "jawaban")} className="filetype" />
+                    <br/>
+                    {/* <Latex>{jawaban} */}
+                    {/* <Latex displayMode={true}>$\pi$</Latex> */}
+                    {/* </Latex> */}
+                    {/* {ReactHtmlParser(jawaban)} */}
+                    {/* {jawaban} */}
+                    {/* <div dangerouslySetInnerHTML={{__html: jawaban}}></div> */}
+                    {translationLatex(jawaban).split(" ").map((item,index) => {
+                    return translationLatexPreview("jawaban",item,index)
+                    })}
             </div>
                 :
             <div className={styles.jwb_pilgan}>
@@ -354,7 +716,13 @@ function EditForm(props) {
             <br/>
             <div className={styles.editor}>
             <textarea value={pembahasan} onChange={pembahasanType} name="" id="" cols="30" rows="10"></textarea>
-            <Latex>{pembahasan}</Latex>
+            <span>Pilih Gambar </span>
+                <input type="file" onChange={onImageChange.bind(this, "pembahasan")} className="filetype" />
+                <br/>
+                {/* <Latex>{pembahasan}</Latex> */}
+                {translationLatex(pembahasan).split(" ").map((item,index) => {
+                    return translationLatexPreview("pembahasan",item,index)
+                })}
             </div>
             <br />
             

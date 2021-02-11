@@ -19,7 +19,27 @@ function HomeSoal(props) {
     const [id, setId] = useState("");
     const [deleteData, setDeleteData] = useState(false);
     const [updateData, setUpdateData] = useState(false);
+    const [nomorChangeTriggered, setNomorChangeTriggered] = useState(false);
+    const [loadImg, setLoadImg] = useState(true);
     const [imgSoal, setImgSoal] = useState([]);
+    const [link, setLink] = useState([]);
+    const [linkTemp, setLinkTemp] = useState([]);
+
+    // const base_url = "http://localhost/app_bimbel_api";
+    const base_url = "https://app-bimbel-web.herokuapp.com";
+
+
+    // const getSrcImg = (id_soal) => {
+    //     axios.get('/gambar_soal?id_soal='+id_soal)
+    //             .then(function (response) {
+    //                 // setMapel(response.data);
+    //                 // return response.data[0]["deskripsi"];
+    //                 setLink(response.data);
+    //             });
+        
+    //     //  const dataPromise = promise.then((response) => response.data)
+    //     console.log("link = "+link);
+    // }
 
     const translationLatex = (input) => {
         
@@ -138,16 +158,53 @@ function HomeSoal(props) {
         
     }
 
-    const translationLatexPreview = (item) => {
+    const translationLatexPreview = (input,item,index) => {
+        // console.log(item);
+        // console.log(/img\d+/s.test(item));
        if (/\$(.*?)\$/s.test(item)) {
-            return (<Latex>{item+" "}</Latex>);
-        } else if (/@(.*?)@/s.test(item)) {
-            return (<Latex displayMode={true}>{item.replaceAll("@","$$")+" "}</Latex>);
-        } else if (/img/s.test(item)) {
-        const numberImages = item.match(/(?<=img).*/s);
-            return (<img width="100%" src={imgSoal[numberImages[0]-1]} alt="aad"/>);
+            return (<Latex key={index.toString()}>{item+" "}</Latex>);
+        } if (/@(.*?)@/s.test(item)) {
+            return (<Latex key={index.toString()} displayMode={true}>{item.replaceAll("@","$$")+" "}</Latex>);
+        } if (/img\d+/s.test(item)) {
+            const numberImages = item.match(/(?<=img)\d+/s);
+            // const src = link[numberImages[0]]["deskripsi"];
+            // console.log(link);
+            // console.log("link ="+link.length);
+            // console.log("linkTemp ="+linkTemp.length);
+            // console.log(typeof link[numberImages[0]]["deskripsi"] === 'undefined');
+            // setLinkTemp(link);
+            // let i = 0;
+            // i += 1;
+            // console.log("ini i = "+i++)
+            // console.log(link.length);
+            if (typeof link[numberImages[0]] !== 'undefined') {
+                // console.log("ini ;lllllink");
+                // console.log(numberImages[0]);
+                // console.log(link[numberImages[0]]);
+                   return (
+                       <div key={index.toString()} className="img__group" id="img__group__soal">
+                           <img src={typeof link[numberImages[0]]["deskripsi"] !== 'undefined'?base_url+link[numberImages[0]]["deskripsi"]:""} alt="aad" />
+                           {/* <button style={{ position: "absolute",right: "10px",width: "40px",height: "30px",cursor: "pointer"}} onClick={() => removeImage(input, numberImages[0])}>X</button> */}
+                       </div>
+                        );
+            } else {
+                return <div key={index.toString()}></div>;
+            }
+            // // let src2;
+            // if (typeof link !== 'undefined') {
+            //     return (
+            //    <div key={index.toString()} className="img__group" id="img__group__soal">
+            //        <img src={base_url+link[numberImages[0]]["deskripsi"]} alt="aad" />
+            //        {/* <button style={{ position: "absolute",right: "10px",width: "40px",height: "30px",cursor: "pointer"}} onClick={() => removeImage(input, numberImages[0])}>X</button> */}
+            //    </div>
+            //     );
+            // }
+        //    console.log("numberImages[0] = " + numberImages[0]);
+        //    console.log(src2);
+        //    console.log("imgSoal[numberImages[0] = " + imgSoal[numberImages[0]]);
+           
         } else { 
-            return (<span>{item+" "}</span>);
+            return (<span key={index.toString()}>{item+" "}</span>);
         }
     }
 
@@ -201,6 +258,7 @@ function HomeSoal(props) {
    
     
     const nomorChanged = (e) => {
+        setNomorChangeTriggered(true);
         setNomor(e.target.value)
     }
     const selectKelasChanged = (e) => {
@@ -215,6 +273,26 @@ function HomeSoal(props) {
         setSelectTingkatKesulitan(e.target.value)
         setUpdateData(true);
     }
+    const fetchImageSoal = () => {
+        axios.get('/bank_soal?id_mapel='
+                + selectMapel +
+                '&id_kelas=' + selectKelas
+                + '&id_bab_soal=' + selectbabSoal
+                +'&id_tingkat_kesulitan=' + selectTingkatKesulitan)
+                .then(function (response) {
+                   
+                    if (response.data.length !== 0) {
+                          axios.get('/gambar_soal?id_soal='+response.data[nomor-1]["id"])
+                              .then(function (response) {
+                                //   console.log("iniresponse.data");
+                                //   console.log(response.data);
+                            setLink(response.data);
+                        });
+                     }
+                });
+        setLinkTemp(link);
+    }
+
     const fetchUpdateBankSoal = (e) => {
         axios.get('/bank_soal?id_mapel='
                 + selectMapel +
@@ -250,6 +328,18 @@ function HomeSoal(props) {
                     setTingkatKesulitan(response.data);
                 });
         }
+        // async function getSrcImg() {
+        //     console.log("id= "+id);
+        //     axios.get('/gambar_soal?id_soal='+id)
+        //             .then(function (response) {
+        //                 // setMapel(response.data);
+        //                 // return response.data[0]["deskripsi"];
+        //                 setLink(response.data);
+        //             });
+            
+        //     //  const dataPromise = promise.then((response) => response.data)
+        //     console.log("lnk= "+link);
+        // }
         fetchdata();
         if (selectMapel !== "") {
             axios.get('/bab_soal?id_mapel=' + selectMapel)
@@ -272,6 +362,8 @@ function HomeSoal(props) {
                 + '&id_bab_soal=' + selectbabSoal
                 +'&id_tingkat_kesulitan=' + selectTingkatKesulitan)
                 .then(function (response) {
+                    // getSrcImg(response.data[response.data.length - 1].id);
+                    // console.log(response.data);
                     setBankSoal(response.data);
                     if (response.data.length !== 0) {
                         if (nomor !== 0) {
@@ -281,9 +373,11 @@ function HomeSoal(props) {
                 });
                 setDeleteData(false)
         }
-        // if (nomor > 0) {
-            
-        // }
+        if (nomorChangeTriggered) {
+            // setLink([]);
+            fetchImageSoal();
+            setNomorChangeTriggered(false);
+        }
         if (
             selectMapel !== "" &&
             selectKelas !== "" &&
@@ -292,10 +386,14 @@ function HomeSoal(props) {
             updateData
         ) {
             fetchUpdateBankSoal();
+            fetchImageSoal();
+            // console.log(id+"= id")
+            // getSrcImg();
+            
             setUpdateData(false);
             
             }
-    }, [selectMapel,selectKelas,selectbabSoal,selectTingkatKesulitan,nomor,deleteData,id,bankSoal]);
+    }, [selectMapel,selectKelas,selectbabSoal,selectTingkatKesulitan,nomor,nomorChangeTriggered,deleteData,id,bankSoal]);
 
     return (
         <div className={styles.container}>
@@ -352,38 +450,38 @@ function HomeSoal(props) {
                     {/* //    <option key={item.id} value={item.id}>{item.deskripsi}</option> */}
                 <strong>Soal :</strong>
                     <p>
-                        {translationLatex(item.soal).split(" ").map((item) => {
-                            return translationLatexPreview(item)
+                        {translationLatex(item.soal).split(" ").map((item,index) => {
+                            return translationLatexPreview("soal",item,index)
                         })}
                     </p>
                     {item.tipe_soal === "pilgan" ? 
                         <div className="">
-                            <p>A.  {translationLatex(item.pil_a).split(" ").map((item) => {
-                                    return translationLatexPreview(item)
+                            <p>A.  {translationLatex(item.pil_a).split(" ").map((item,index) => {
+                                    return translationLatexPreview("pil_a",item,index)
                                     })}</p>
-                            <p>B.  {translationLatex(item.pil_b).split(" ").map((item) => {
-                                    return translationLatexPreview(item)
+                            <p>B.  {translationLatex(item.pil_b).split(" ").map((item,index) => {
+                                    return translationLatexPreview("pil_b",item,index)
                                     })}</p>
-                            <p>C.  {translationLatex(item.pil_c).split(" ").map((item) => {
-                                    return translationLatexPreview(item)
+                            <p>C.  {translationLatex(item.pil_c).split(" ").map((item,index) => {
+                                    return translationLatexPreview("pil_c",item,index)
                                     })}</p>
-                            <p>D.  {translationLatex(item.pil_d).split(" ").map((item) => {
-                                    return translationLatexPreview(item)
+                            <p>D.  {translationLatex(item.pil_d).split(" ").map((item,index) => {
+                                    return translationLatexPreview("pil_d",item,index)
                                     })}</p>
-                            <p>E.  {translationLatex(item.pil_e).split(" ").map((item) => {
-                                    return translationLatexPreview(item)
+                            <p>E.  {translationLatex(item.pil_e).split(" ").map((item,index) => {
+                                    return translationLatexPreview("pil_e",item,index)
                                     })}</p>
                         </div>
                     :
                         <div className=""></div>
                 }    
                 <strong>Jawaban :</strong>
-                <p>{translationLatex(item.jawaban).split(" ").map((item) => {
-                    return translationLatexPreview(item)
+                <p>{translationLatex(item.jawaban).split(" ").map((item,index) => {
+                    return translationLatexPreview("jawaban",item,index)
                 })}</p>
                 <strong>Pembahasan :</strong>
-                <p>{translationLatex(item.pembahasan).split(" ").map((item) => {
-                    return translationLatexPreview(item)
+                <p>{translationLatex(item.pembahasan).split(" ").map((item,index) => {
+                    return translationLatexPreview("pembahasan",item,index)
                 })}</p>
                 {/* <a href="#0"></a> */}
                 </div>

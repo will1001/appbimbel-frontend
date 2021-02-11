@@ -1,5 +1,28 @@
 .container{
     padding: 10px;
+    .popup__menu__container{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba($color: #000000, $alpha: 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .popup__menu{
+            position: absolute;
+            width: 300px;
+            height: 150px;
+            background-color: white;
+            text-align: center;
+            z-index: 999;
+        }
+        .button__group{
+            margin-top: 10px;
+        }
+
+    }
     .pilihan__ganda{
         display: flex;
         flex-direction: column;
@@ -7,11 +30,17 @@
     select{
         margin-right: 10px;
     }
+    
     .editor{
-       display: flex;
-        flex-direction: column;
+        // display: flex;
+        // flex-direction: column;
+        // width: 100%;
         textarea{
             margin-bottom: 10px;
+            width: 100%;
+        }
+        .text{
+            // white-space: normal!important;
         }
     }
 }
