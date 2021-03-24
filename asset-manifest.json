@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/appbimbel-frontend/static/css/main.6a9310b4.chunk.css",
-    "main.js": "/appbimbel-frontend/static/js/main.d273f393.chunk.js",
-    "main.js.map": "/appbimbel-frontend/static/js/main.d273f393.chunk.js.map",
+    "main.js": "/appbimbel-frontend/static/js/main.a80fe768.chunk.js",
+    "main.js.map": "/appbimbel-frontend/static/js/main.a80fe768.chunk.js.map",
     "runtime-main.js": "/appbimbel-frontend/static/js/runtime-main.b4c332bb.js",
     "runtime-main.js.map": "/appbimbel-frontend/static/js/runtime-main.b4c332bb.js.map",
     "static/css/2.128cd366.chunk.css": "/appbimbel-frontend/static/css/2.128cd366.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.128cd366.chunk.css",
     "static/js/2.d53729a7.chunk.js",
     "static/css/main.6a9310b4.chunk.css",
-    "static/js/main.d273f393.chunk.js"
+    "static/js/main.a80fe768.chunk.js"
   ]
 }
