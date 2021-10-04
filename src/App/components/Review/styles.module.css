@@ -1,0 +1,13 @@
+.container {
+  padding-top: 50px;
+}
+
+.container .panel_input_review {
+  margin: 1px;
+}
+
+.container .editor_style {
+  border: 1px solid gray;
+  padding: 8px;
+}
+/*# sourceMappingURL=styles.module.css.map */

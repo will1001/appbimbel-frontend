@@ -1,0 +1,45 @@
+.container {
+  padding-top: 50px;
+}
+
+.editor_style {
+  border: 1px solid gray;
+  padding: 8px;
+}
+
+.tambah_data_container {
+  padding: 8px;
+}
+
+.tambah_soal {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-item-align: center;
+      align-self: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.tambah_soal h1 {
+  text-align: center;
+}
+
+.tambah_soal .layer1 {
+  width: 50%;
+  height: 90%;
+  background-color: white;
+  overflow: scroll;
+}
+/*# sourceMappingURL=styles.module.css.map */

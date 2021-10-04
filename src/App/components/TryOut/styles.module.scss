@@ -1,0 +1,38 @@
+.container{
+    padding-top: 50px;
+}
+
+ .tambah_soal{
+        background-color:rgba($color: #000000, $alpha: 0.5);
+        height: 100vh;
+        width: 100%;
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        align-self: center;
+        justify-content: center;
+        h1{
+            text-align: center;
+        }
+       .layer1{
+        width: 50%;
+        height: 80%;
+        background-color: white;
+        overflow: scroll;
+        .panel_part_tryout{
+            // border: 1px solid black;
+            padding: 20px;
+            //  position: absolute;
+            //  z-index: 3;
+            // top: 0;
+            // left: 0;
+        }
+       }
+   }
+
+   .button_flex_display{
+       display: flex;
+   }
