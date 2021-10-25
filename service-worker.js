@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/appbimbel-frontend/precache-manifest.d5c61a0f1afdee24523ae5d935cab97e.js"
+  "/appbimbel-frontend/precache-manifest.6062abb242faa181bfe61b3c0ffe4fa9.js"
 );
 
 self.addEventListener('message', (event) => {
