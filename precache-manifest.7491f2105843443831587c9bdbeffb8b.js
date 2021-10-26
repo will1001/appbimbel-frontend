@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b0b532b071a4e9f1654a0d712d0106a4",
+    "revision": "5508f2f38b089e0b2288f7d2ac75e702",
     "url": "/appbimbel-frontend/index.html"
   },
   {
@@ -12,7 +12,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/css/16.a0f3f009.chunk.css"
   },
   {
-    "revision": "156203e7c1c46197f171",
+    "revision": "c5d794d19d97a8196ec1",
     "url": "/appbimbel-frontend/static/css/165.219dc98a.chunk.css"
   },
   {
@@ -48,7 +48,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/css/77.d9a7acd2.chunk.css"
   },
   {
-    "revision": "36031414cf33cd7cae20",
+    "revision": "2031199da96662b15655",
     "url": "/appbimbel-frontend/static/css/78.64d9bc3e.chunk.css"
   },
   {
@@ -76,7 +76,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/css/87.b0ece6a9.chunk.css"
   },
   {
-    "revision": "88199f6e4389018426fe",
+    "revision": "924498f1357d3b20487b",
     "url": "/appbimbel-frontend/static/css/88.835e61c9.chunk.css"
   },
   {
@@ -432,8 +432,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/js/164.fee93fb5.chunk.js"
   },
   {
-    "revision": "156203e7c1c46197f171",
-    "url": "/appbimbel-frontend/static/js/165.81d1b2f7.chunk.js"
+    "revision": "c5d794d19d97a8196ec1",
+    "url": "/appbimbel-frontend/static/js/165.59870da6.chunk.js"
   },
   {
     "revision": "d91849010e1d9f93b2ef",
@@ -1028,8 +1028,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/js/77.97747c0f.chunk.js"
   },
   {
-    "revision": "36031414cf33cd7cae20",
-    "url": "/appbimbel-frontend/static/js/78.30150cac.chunk.js"
+    "revision": "2031199da96662b15655",
+    "url": "/appbimbel-frontend/static/js/78.5e0c0299.chunk.js"
   },
   {
     "revision": "437a2bbcf79a35582a47",
@@ -1076,8 +1076,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/js/87.2c933199.chunk.js"
   },
   {
-    "revision": "88199f6e4389018426fe",
-    "url": "/appbimbel-frontend/static/js/88.0c1e134c.chunk.js"
+    "revision": "924498f1357d3b20487b",
+    "url": "/appbimbel-frontend/static/js/88.d1cf426a.chunk.js"
   },
   {
     "revision": "7a846079fbe9dfdd09b1",
@@ -1132,8 +1132,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/js/main.bda2a01a.chunk.js"
   },
   {
-    "revision": "647cc5dfdb8797689c9f",
-    "url": "/appbimbel-frontend/static/js/runtime-main.9e2c5c2b.js"
+    "revision": "57d46d3064b3cf62a9eb",
+    "url": "/appbimbel-frontend/static/js/runtime-main.71c7784a.js"
   },
   {
     "revision": "fe3817aeebe0c9e70655ae81c8355e77",
