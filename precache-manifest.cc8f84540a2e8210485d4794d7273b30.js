@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b64d401c1defcb86604e56d0e6f9b332",
+    "revision": "abaacfbc51bff3c42e6b595537930675",
     "url": "/appbimbel-frontend/index.html"
   },
   {
@@ -48,8 +48,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/css/77.d9a7acd2.chunk.css"
   },
   {
-    "revision": "35625fd4be2f22d75f83",
-    "url": "/appbimbel-frontend/static/css/78.64d9bc3e.chunk.css"
+    "revision": "f549acebd9801ccaea7c",
+    "url": "/appbimbel-frontend/static/css/78.d676aa4d.chunk.css"
   },
   {
     "revision": "7de2f1025777a33773e5",
@@ -96,7 +96,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/css/92.2b42d69e.chunk.css"
   },
   {
-    "revision": "0a94a8d7ae9826ad2c27",
+    "revision": "d2cae0883e9091906acf",
     "url": "/appbimbel-frontend/static/css/93.1ffcd2fe.chunk.css"
   },
   {
@@ -1036,8 +1036,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/js/77.f83476fd.chunk.js"
   },
   {
-    "revision": "35625fd4be2f22d75f83",
-    "url": "/appbimbel-frontend/static/js/78.9993522b.chunk.js"
+    "revision": "f549acebd9801ccaea7c",
+    "url": "/appbimbel-frontend/static/js/78.5a0bc701.chunk.js"
   },
   {
     "revision": "af61bc806a45f232094a",
@@ -1108,8 +1108,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/js/92.626262bd.chunk.js"
   },
   {
-    "revision": "0a94a8d7ae9826ad2c27",
-    "url": "/appbimbel-frontend/static/js/93.57166301.chunk.js"
+    "revision": "d2cae0883e9091906acf",
+    "url": "/appbimbel-frontend/static/js/93.2e9f3451.chunk.js"
   },
   {
     "revision": "775a4aaace0f1fe553da",
@@ -1140,8 +1140,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/appbimbel-frontend/static/js/main.1a404d81.chunk.js"
   },
   {
-    "revision": "b7123ff8267251997399",
-    "url": "/appbimbel-frontend/static/js/runtime-main.c38ebaed.js"
+    "revision": "3f9d504f80705c9985b8",
+    "url": "/appbimbel-frontend/static/js/runtime-main.b4bd2105.js"
   },
   {
     "revision": "fe3817aeebe0c9e70655ae81c8355e77",
